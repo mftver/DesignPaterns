@@ -1,10 +1,10 @@
-﻿using ConsoleApp1.Factory.Interfaces;
+﻿using Factory.Factory.Interfaces;
 
-namespace ConsoleApp1.Sudoku
+namespace Factory
 {
     internal class SudokuFactory : IFactory
     {
-        public void create()
+        public void Create()
         {
             throw new NotImplementedException();
         }

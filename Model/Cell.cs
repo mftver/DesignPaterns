@@ -1,4 +1,4 @@
-﻿using Model.interfaces;
+﻿using Model.Interfaces;
 
 namespace Model
 {

@@ -1,4 +1,4 @@
-﻿namespace Model.interfaces
+﻿namespace Model.Interfaces
 {
     internal interface IValidatable
     {
