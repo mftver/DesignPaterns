@@ -1,4 +1,4 @@
-﻿namespace Factory.Factory.Interfaces
+﻿namespace Factory.Interfaces
 {
     internal interface IFactory
     {

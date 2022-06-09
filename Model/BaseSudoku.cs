@@ -2,7 +2,7 @@
 
 namespace Model
 {
-    internal abstract class BaseSudoku : IValidatable
+    public abstract class BaseSudoku : IValidatable
     {
         private Cell[][] MySudoku { get; }
         private List<IValidatable> Groups { get; }

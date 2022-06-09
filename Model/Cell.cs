@@ -2,7 +2,7 @@
 
 namespace Model
 {
-    internal class Cell : IValidatable
+    public class Cell : IValidatable
     {
         private int Number { get; set; }
         private bool IsFixed { get; }

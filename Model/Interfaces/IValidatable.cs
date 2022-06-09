@@ -1,6 +1,6 @@
 ﻿namespace Model.Interfaces
 {
-    internal interface IValidatable
+    public interface IValidatable
     {
         bool validate();
     }

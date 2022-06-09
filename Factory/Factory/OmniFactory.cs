@@ -1,4 +1,4 @@
-﻿namespace Factory.Factory
+﻿namespace Factory
 {
     internal class OmniFactory
     {

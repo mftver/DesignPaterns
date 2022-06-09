@@ -1,8 +1,8 @@
-﻿using Factory.Factory.Interfaces;
+﻿using Factory.Interfaces;
 
-namespace Factory
+namespace Factory.Factories
 {
-    internal class JigsawFactory : IFactory
+    internal class SudokuFactory : IFactory
     {
         public void Create()
         {
