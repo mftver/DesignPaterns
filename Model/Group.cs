@@ -1,6 +1,6 @@
-﻿using ConsoleApp1.Models.Interfaces;
+﻿using Model.interfaces;
 
-namespace ConsoleApp1.Models
+namespace Model
 {
     internal class Group : IValidatable
     {
@@ -13,6 +13,8 @@ namespace ConsoleApp1.Models
 
         public bool validate()
         {
+            //validate cells and validate if the whole group contains integers multiple times
+
             throw new NotImplementedException();
         }
     }

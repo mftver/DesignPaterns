@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp1.Models.Interfaces
+﻿namespace Model.interfaces
 {
     internal interface IValidatable
     {
