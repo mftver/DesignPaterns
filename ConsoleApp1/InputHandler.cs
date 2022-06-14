@@ -57,7 +57,7 @@ public class InputHandler
                 if (_cursorPosition.X != _sudoku.Field.GetLength(0) - 1) _cursorPosition.X++;
                 break;
             case Direction.Down:
-                if (_cursorPosition.Y != _sudoku.Field.GetLength(1) - 1) _cursorPosition.Y++;
+                if (_cursorPosition.Y != _sudoku.Field[_cursorPosition.Y].GetLength(0) - 1) _cursorPosition.Y++;
                 break;
             case Direction.Left:
                 if (_cursorPosition.X != 0) _cursorPosition.X--;
@@ -66,6 +66,6 @@ public class InputHandler
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, "Unknown direction");
         }
         
-        _renderer.Draw(_sudoku);
+        _renderer.Draw(_sudoku, _cursorPosition);
     }
 }
