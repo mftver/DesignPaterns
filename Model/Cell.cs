@@ -4,12 +4,14 @@ namespace Model
 {
     public class Cell : IValidatable
     {
-        private int Number { get; set; }
+        public int Number { get; private set; }
         private bool IsFixed { get; }
         private List<IValidatable> Groups { get; }
         private List<int> PossibleNumbers { get; }
 
-        public Cell(int number, List<IValidatable> groups)
+        public readonly int SubGroup;
+
+        public Cell(int number, List<IValidatable> groups, int subGroup)
         {
             if (number is < 0 or > 9)
             {
@@ -19,6 +21,7 @@ namespace Model
             Number = number;
             this.IsFixed = true;
             this.Groups = groups;
+            SubGroup = subGroup;
             PossibleNumbers = new List<int>
             {
                 1,2,3,4,5,6,7,8,9
@@ -26,10 +29,11 @@ namespace Model
             PossibleNumbers.Remove(number);
         }
 
-        public Cell(List<IValidatable> groups)
+        public Cell(List<IValidatable> groups, int subGroup)
         {
             this.IsFixed = false;
             this.Groups = groups;
+            SubGroup = subGroup;
             PossibleNumbers = new List<int>
             {
                 1,2,3,4,5,6,7,8,9

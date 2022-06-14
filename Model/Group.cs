@@ -2,7 +2,7 @@
 
 namespace Model
 {
-    internal class Group : IValidatable
+    public class Group : IValidatable
     {
         private List<Cell> _cells { get; }
 

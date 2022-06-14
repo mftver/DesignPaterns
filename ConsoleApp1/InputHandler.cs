@@ -6,6 +6,7 @@ public class InputHandler
 {
     private readonly Renderer _renderer;
     private readonly Sudoku _sudoku;
+    private readonly Coordinate _cursorPosition;
     private bool _quit;
     private readonly Dictionary<ConsoleKey, Action> _actionKeys;
     private ConsoleKey _keyPressed;
@@ -15,17 +16,14 @@ public class InputHandler
         _renderer = renderer;
         _sudoku = sudoku;
         _quit = false;
+        _cursorPosition = new Coordinate(0, 0);
         
         _actionKeys = new Dictionary<ConsoleKey, Action>
         {
-            // {ConsoleKey.UpArrow, () => game.MovePlayer(Direction.North)},
-            // {ConsoleKey.LeftArrow, () => game.MovePlayer(Direction.West)},
-            // {ConsoleKey.RightArrow, () => game.MovePlayer(Direction.East)},
-            // {ConsoleKey.DownArrow, () => game.MovePlayer(Direction.South)},
-            // {ConsoleKey.W, () => game.MovePlayer(Direction.North)},
-            // {ConsoleKey.A, () => game.MovePlayer(Direction.West)},
-            // {ConsoleKey.D,() =>  game.MovePlayer(Direction.East)},
-            // {ConsoleKey.S, () => game.MovePlayer(Direction.South)},
+            {ConsoleKey.UpArrow, () => MoveCursor(Direction.Up) },
+            {ConsoleKey.RightArrow, () => MoveCursor(Direction.Right) },
+            {ConsoleKey.DownArrow, () => MoveCursor(Direction.Down) },
+            {ConsoleKey.LeftArrow, () => MoveCursor(Direction.Left) },
             // {ConsoleKey.Escape, () => _gameView.DrawEnd()}
         };
     }
@@ -39,14 +37,35 @@ public class InputHandler
             _keyPressed = Console.ReadKey().Key;
             _quit = _keyPressed == ConsoleKey.Escape;
 
-            if (_actionKeys.TryGetValue(_keyPressed, out var action))
-            {
-                action.Invoke();
-
-                _keyPressed = 0;
-            }
+            if (!_actionKeys.TryGetValue(_keyPressed, out var action)) continue;
+            
+            action.Invoke();
+            _keyPressed = 0;
         }
 
         Console.ReadLine();
+    }
+
+    private void MoveCursor(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                if (_cursorPosition.Y != 0) _cursorPosition.Y--;
+                break;
+            case Direction.Right:
+                if (_cursorPosition.X != _sudoku.Field.GetLength(0) - 1) _cursorPosition.X++;
+                break;
+            case Direction.Down:
+                if (_cursorPosition.Y != _sudoku.Field.GetLength(1) - 1) _cursorPosition.Y++;
+                break;
+            case Direction.Left:
+                if (_cursorPosition.X != 0) _cursorPosition.X--;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(direction), direction, "Unknown direction");
+        }
+        
+        _renderer.Draw(_sudoku);
     }
 }
