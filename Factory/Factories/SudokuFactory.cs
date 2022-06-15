@@ -1,10 +1,11 @@
 ﻿using Factory.Interfaces;
+using Model;
 
 namespace Factory.Factories
 {
     internal class SudokuFactory : IFactory
     {
-        public void Create()
+        public Sudoku Create(string[] input)
         {
             throw new NotImplementedException();
         }

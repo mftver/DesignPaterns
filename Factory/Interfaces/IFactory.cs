@@ -1,7 +1,9 @@
-﻿namespace Factory.Interfaces
+﻿using Model;
+
+namespace Factory.Interfaces
 {
     internal interface IFactory
     {
-        void Create();
+        Sudoku Create(string[] input);
     }
 }
