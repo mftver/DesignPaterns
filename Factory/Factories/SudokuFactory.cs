@@ -1,14 +1,15 @@
 ﻿using Factory.Interfaces;
 using Model;
+using File = Factory.models.File;
 using Model.Interfaces;
 
 namespace Factory.Factories
 {
     internal class SudokuFactory : IFactory
     {
-        public Sudoku Create(string[] input)
+        public Sudoku Create(File file)
         {
-            var sudokuString = input[0];
+            var sudokuString = file.Contents()[0];
             var gridSize = Convert.ToInt32(Math.Sqrt(sudokuString.Length));
             
             
@@ -74,6 +75,18 @@ namespace Factory.Factories
                 return (y / (gridSize / 2)) * 2 + x / (gridSize / 2);
 
             throw new ArgumentException("Invalid grid size");
+        }
+
+        public bool Supports(File file)
+        {
+            var fileExtensions = new List<string>()
+            {
+                ".4x4",
+                ".6x6",
+                ".9x9",
+            };
+
+            return fileExtensions.Contains(file.Extension);
         }
     }
 }
