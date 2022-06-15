@@ -54,10 +54,10 @@ public class InputHandler
                 if (_cursorPosition.Y != 0) _cursorPosition.Y--;
                 break;
             case Direction.Right:
-                if (_cursorPosition.X != _sudoku.Field.GetLength(0) - 1) _cursorPosition.X++;
+                if (_cursorPosition.X != _sudoku.Grid.GetLength(0) - 1) _cursorPosition.X++;
                 break;
             case Direction.Down:
-                if (_cursorPosition.Y != _sudoku.Field[_cursorPosition.Y].GetLength(0) - 1) _cursorPosition.Y++;
+                if (_cursorPosition.Y != _sudoku.Grid[_cursorPosition.Y].GetLength(0) - 1) _cursorPosition.Y++;
                 break;
             case Direction.Left:
                 if (_cursorPosition.X != 0) _cursorPosition.X--;

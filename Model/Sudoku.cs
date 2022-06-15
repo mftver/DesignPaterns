@@ -2,11 +2,19 @@
 
 namespace Model;
 
-public class Sudoku : BaseSudoku
+public class Sudoku
 {
-    public readonly Cell[][] Field;
-    public Sudoku(Cell[][] mySudoku, List<IValidatable> groups) : base(mySudoku, groups)
+    public readonly Cell[][] Grid;
+    private List<IValidatable> Groups { get; }
+
+    public Sudoku(Cell[][] grid, List<IValidatable> groups)
     {
-        Field = mySudoku;
+        Grid = grid;
+        Groups = groups;
+    }
+
+    public bool validate()
+    {
+        return Groups.All(validatable => validatable.validate());
     }
 }

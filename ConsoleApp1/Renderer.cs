@@ -13,7 +13,7 @@ public class Renderer
     {
         Console.Clear();
 
-        var field = sudoku.Field;
+        var field = sudoku.Grid;
         var y = 0;
         foreach (var row in field)
         {
