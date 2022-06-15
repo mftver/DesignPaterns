@@ -2,7 +2,7 @@
 
 namespace Game;
 
-internal class SudokuSolver : ISolver
+internal class BacktraceSolver : ISolver
 {
     public void Solve()
     {
