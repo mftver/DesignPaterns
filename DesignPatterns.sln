@@ -12,6 +12,23 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factory", "Factory\Factory.csproj", "{E4F96B4C-F0F7-4DCC-A92E-3D649A1D9118}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sudokus", "Sudokus", "{9F793D8D-ED97-4F53-BB54-F736D8BBEE59}"
+	ProjectSection(SolutionItems) = preProject
+		Sudokus\puzzle.4x4 = Sudokus\puzzle.4x4
+		Sudokus\puzzle.6x6 = Sudokus\puzzle.6x6
+		Sudokus\puzzle.9x9 = Sudokus\puzzle.9x9
+		Sudokus\puzzle.jigsaw = Sudokus\puzzle.jigsaw
+		Sudokus\puzzle.samurai = Sudokus\puzzle.samurai
+		Sudokus\puzzle2.4x4 = Sudokus\puzzle2.4x4
+		Sudokus\puzzle2.6x6 = Sudokus\puzzle2.6x6
+		Sudokus\puzzle2.9x9 = Sudokus\puzzle2.9x9
+		Sudokus\puzzle2.jigsaw = Sudokus\puzzle2.jigsaw
+		Sudokus\puzzle2.samurai = Sudokus\puzzle2.samurai
+		Sudokus\puzzle3.4x4 = Sudokus\puzzle3.4x4
+		Sudokus\puzzle3.6x6 = Sudokus\puzzle3.6x6
+		Sudokus\puzzle3.9x9 = Sudokus\puzzle3.9x9
+		Sudokus\puzzle3.jigsaw = Sudokus\puzzle3.jigsaw
+		Sudokus\puzzle3.samurai = Sudokus\puzzle3.samurai
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
