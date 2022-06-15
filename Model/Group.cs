@@ -1,28 +1,35 @@
 ﻿using Model.Interfaces;
 
-namespace Model
+namespace Model;
+
+public class Group : IValidatable
 {
-    public class Group : IValidatable
+    public Group()
     {
-        private List<Cell> _cells { get; }
+        _validateables = new List<IValidatable>();
+    }
 
-        public Group()
-        {
-            _cells = new List<Cell>();
-        }
-        
-        public void AddCell(Cell cell)
-        {
-            _cells.Add(cell);
-        }
-        
-        
+    private List<IValidatable> _validateables { get; }
 
-        public bool Validate()
-        {
-            //validate cells and validate if the whole group contains integers multiple times
+    public bool Validate()
+    {
+        //validate cells and validate if the whole group contains integers multiple times
 
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
+    }
+
+    public void AddValidateable(IValidatable validateable)
+    {
+        _validateables.Add(validateable);
+    }
+    
+       public void RemoveValidateables(IValidatable validateable)
+    {
+        _validateables.Remove(validateable);
+    }
+       
+       public List<IValidatable> GetChildren()
+    {
+        return _validateables;
     }
 }

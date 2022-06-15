@@ -9,10 +9,11 @@ public class File
 
     public string Path { get; }
 
-    public string[] Contents() {
+    public string Extension => System.IO.Path.GetExtension(Path);
+
+    public string[] Contents()
+    {
         var lines = System.IO.File.ReadAllLines(Path);
         return lines;
     }
-
-    public string Extension => System.IO.Path.GetExtension(Path);
 }

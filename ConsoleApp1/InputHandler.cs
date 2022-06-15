@@ -4,12 +4,12 @@ namespace Frontend;
 
 public class InputHandler
 {
+    private readonly Dictionary<ConsoleKey, Action> _actionKeys;
+    private readonly Coordinate _cursorPosition;
     private readonly Renderer _renderer;
     private readonly Sudoku _sudoku;
-    private readonly Coordinate _cursorPosition;
-    private bool _quit;
-    private readonly Dictionary<ConsoleKey, Action> _actionKeys;
     private ConsoleKey _keyPressed;
+    private bool _quit;
 
     public InputHandler(Renderer renderer, Sudoku sudoku)
     {
@@ -17,17 +17,17 @@ public class InputHandler
         _sudoku = sudoku;
         _quit = false;
         _cursorPosition = new Coordinate(0, 0);
-        
+
         _actionKeys = new Dictionary<ConsoleKey, Action>
         {
-            {ConsoleKey.UpArrow, () => MoveCursor(Direction.Up) },
-            {ConsoleKey.RightArrow, () => MoveCursor(Direction.Right) },
-            {ConsoleKey.DownArrow, () => MoveCursor(Direction.Down) },
-            {ConsoleKey.LeftArrow, () => MoveCursor(Direction.Left) },
-            {ConsoleKey.W, () => MoveCursor(Direction.Up) },
-            {ConsoleKey.D, () => MoveCursor(Direction.Right) },
-            {ConsoleKey.S, () => MoveCursor(Direction.Down) },
-            {ConsoleKey.A, () => MoveCursor(Direction.Left) },
+            { ConsoleKey.UpArrow, () => MoveCursor(Direction.Up) },
+            { ConsoleKey.RightArrow, () => MoveCursor(Direction.Right) },
+            { ConsoleKey.DownArrow, () => MoveCursor(Direction.Down) },
+            { ConsoleKey.LeftArrow, () => MoveCursor(Direction.Left) },
+            { ConsoleKey.W, () => MoveCursor(Direction.Up) },
+            { ConsoleKey.D, () => MoveCursor(Direction.Right) },
+            { ConsoleKey.S, () => MoveCursor(Direction.Down) },
+            { ConsoleKey.A, () => MoveCursor(Direction.Left) }
             // {ConsoleKey.Escape, () => _gameView.DrawEnd()}
         };
     }
@@ -42,7 +42,7 @@ public class InputHandler
             _quit = _keyPressed == ConsoleKey.Escape;
 
             if (!_actionKeys.TryGetValue(_keyPressed, out var action)) continue;
-            
+
             action.Invoke();
             _keyPressed = 0;
         }
@@ -69,7 +69,7 @@ public class InputHandler
             default:
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, "Unknown direction");
         }
-        
+
         _renderer.Draw(_sudoku, _cursorPosition);
     }
 }

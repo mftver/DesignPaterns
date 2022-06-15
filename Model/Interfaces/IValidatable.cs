@@ -1,7 +1,6 @@
-﻿namespace Model.Interfaces
+﻿namespace Model.Interfaces;
+
+public interface IValidatable
 {
-    public interface IValidatable
-    {
-        bool Validate();
-    }
+    bool Validate();
 }

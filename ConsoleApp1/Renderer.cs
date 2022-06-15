@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Model;
+﻿using Model;
 
 namespace Frontend;
 
@@ -31,6 +30,7 @@ public class Renderer
                     Console.BackgroundColor = (ConsoleColor)cell.GetSubGroupId();
                     Console.ForegroundColor = (ConsoleColor)cell.GetSubGroupId() + 2;
                 }
+
                 Console.Write(cell.Number);
                 x++;
             }

@@ -1,92 +1,91 @@
 ﻿using Factory.Interfaces;
 using Model;
-using File = Factory.models.File;
 using Model.Interfaces;
+using File = Factory.models.File;
 
-namespace Factory.Factories
+namespace Factory.Factories;
+
+internal class SudokuFactory : IFactory
 {
-    internal class SudokuFactory : IFactory
+    public Sudoku Create(File file)
     {
-        public Sudoku Create(File file)
+        var sudokuString = file.Contents()[0];
+        var gridSize = Convert.ToInt32(Math.Sqrt(sudokuString.Length));
+
+
+        // Create a group for each column
+        var columnGroups = createGroupArray(gridSize);
+        var rowGroups = createGroupArray(gridSize);
+        var subGroups = new List<SubGroup>();
+
+        // Fill grid
+        var grid = new Cell[gridSize][];
+        for (var row = 0; row < gridSize; row++)
         {
-            var sudokuString = file.Contents()[0];
-            var gridSize = Convert.ToInt32(Math.Sqrt(sudokuString.Length));
-            
-            
-            // Create a group for each column
-            var columnGroups = createGroupArray(gridSize);
-            var rowGroups = createGroupArray(gridSize);
-            var subGroups = new List<SubGroup>();
-            
-            // Fill grid
-            var grid = new Cell[gridSize][];
-            for (var y = 0; y < gridSize; y++)
+            grid[row] = new Cell[gridSize];
+            var rowGroup = rowGroups[row];
+
+            for (var column = 0; column < gridSize; column++)
             {
-                grid[y] = new Cell[gridSize];
-                var rowGroup = rowGroups[y];
-                
-                for (var x = 0; x < gridSize; x++)
+                var cellValue = sudokuString[row * gridSize + column] - '0';
+                var subGroupIndex = calculateSubGroupIndex(row, column, gridSize);
+
+                var subGroup = subGroups.ElementAtOrDefault(subGroupIndex);
+                if (subGroup == null)
                 {
-                    var cellValue = sudokuString[y * gridSize + x] - '0';
-                    var subGroupIndex = calculateSubGroupIndex(x, y , gridSize);
-
-                    var subGroup = subGroups.ElementAtOrDefault(subGroupIndex);
-                    if (subGroup == null)
-                    {
-                        subGroup = new SubGroup(subGroupIndex);
-                        subGroups.Insert(subGroupIndex, subGroup);
-                    }
-                    
-                    var groups = new List<IValidatable>
-                    {
-                        columnGroups[x],
-                        rowGroup,
-                        subGroup,
-                    };
-                    
-                    grid[y][x] = new Cell(cellValue, groups, subGroup);
+                    subGroup = new SubGroup(subGroupIndex);
+                    subGroups.Insert(subGroupIndex, subGroup);
                 }
+
+                var groups = new List<IValidatable>
+                {
+                    columnGroups[column],
+                    rowGroup,
+                    subGroup
+                };
+
+                grid[column][row] = new Cell(cellValue, groups, subGroup);
             }
-
-            var allGroups = new List<IValidatable>();
-            allGroups.AddRange(columnGroups);
-            allGroups.AddRange(rowGroups);
-            allGroups.AddRange(subGroups);
-            
-            return new Sudoku(grid, allGroups);
         }
-        
-        private Group[] createGroupArray(int size)
+
+        var allGroups = new List<IValidatable>();
+        allGroups.AddRange(columnGroups);
+        allGroups.AddRange(rowGroups);
+        allGroups.AddRange(subGroups);
+
+        return new Sudoku(grid, allGroups);
+    }
+
+    public bool Supports(File file)
+    {
+        var fileExtensions = new List<string>
         {
-            var groupArray = new Group[size];
-            for (var i = 0; i < size; i++)
-                groupArray[i] = new Group();
-            
-            return groupArray;
-        }
+            ".4x4",
+            ".6x6",
+            ".9x9"
+        };
 
-        private int calculateSubGroupIndex(int x, int y, int gridSize)
-        {
-            if (gridSize == 9)
-                return (y / (gridSize / 3)) * 3 + x / (gridSize / 3);
-            if (gridSize == 6)
-                return (y / (gridSize / 3)) * 2 + x / (gridSize / 2);
-            if (gridSize == 4)
-                return (y / (gridSize / 2)) * 2 + x / (gridSize / 2);
+        return fileExtensions.Contains(file.Extension);
+    }
 
-            throw new ArgumentException("Invalid grid size");
-        }
+    private Group[] createGroupArray(int size)
+    {
+        var groupArray = new Group[size];
+        for (var i = 0; i < size; i++)
+            groupArray[i] = new Group();
 
-        public bool Supports(File file)
-        {
-            var fileExtensions = new List<string>()
-            {
-                ".4x4",
-                ".6x6",
-                ".9x9",
-            };
+        return groupArray;
+    }
 
-            return fileExtensions.Contains(file.Extension);
-        }
+    private int calculateSubGroupIndex(int x, int y, int gridSize)
+    {
+        if (gridSize == 9)
+            return y / (gridSize / 3) * 3 + x / (gridSize / 3);
+        if (gridSize == 6)
+            return y / (gridSize / 3) * 2 + x / (gridSize / 2);
+        if (gridSize == 4)
+            return y / (gridSize / 2) * 2 + x / (gridSize / 2);
+
+        throw new ArgumentException("Invalid grid size");
     }
 }
