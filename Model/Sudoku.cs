@@ -15,6 +15,6 @@ public class Sudoku
 
     public bool validate()
     {
-        return Groups.All(validatable => validatable.validate());
+        return Groups.All(validatable => validatable.Validate());
     }
 }

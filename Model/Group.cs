@@ -6,12 +6,19 @@ namespace Model
     {
         private List<Cell> _cells { get; }
 
-        public Group(List<Cell> cells)
+        public Group()
         {
-            _cells = cells;
+            _cells = new List<Cell>();
         }
+        
+        public void AddCell(Cell cell)
+        {
+            _cells.Add(cell);
+        }
+        
+        
 
-        public bool validate()
+        public bool Validate()
         {
             //validate cells and validate if the whole group contains integers multiple times
 

@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using Factory;
+using Factory.models;
+using File = Factory.models.File;
 
 namespace Frontend
 {
@@ -13,8 +15,11 @@ namespace Frontend
             Console.WindowHeight = 50;
             Console.CursorVisible = false;
 
-            var reader = new SudokuReader();
-            var sudoku = reader.Read(@"./Levels/TempleOfDoom.json");
+            var factory = new OmniFactory();
+
+            var testFile = new File(@"../../../../Sudokus/puzzle.9x9");
+
+            var sudoku = factory.Create(testFile);
 
             var renderer = new Renderer();
 

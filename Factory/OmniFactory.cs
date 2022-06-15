@@ -1,10 +1,10 @@
-﻿using Factory.Interfaces;
+using Factory.Interfaces;
 using Model;
 using File = Factory.models.File;
 
 namespace Factory
 {
-    internal class OmniFactory : IFactory
+    public class OmniFactory : IFactory
     {
         private IEnumerable<IFactory> _factories;
         
@@ -16,6 +16,7 @@ namespace Factory
                 .Where(type => typeof(IFactory).IsAssignableFrom(type) && GetType() != type && !type.IsInterface && !type.IsAbstract);
 
             _factories = factories.Select(factory => (IFactory)Activator.CreateInstance(factory)!);
+
         }
         
         public Sudoku Create(File file) {
