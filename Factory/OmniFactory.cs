@@ -4,7 +4,7 @@ using File = Factory.models.File;
 
 namespace Factory
 {
-    internal class OmniFactory : IFactory
+    public class OmniFactory : IFactory
     {
         private IEnumerable<IFactory> _factories;
         
