@@ -9,8 +9,8 @@ public class File
 
     public string Path { get; }
 
-    private string[] Contents(string filePath) {
-        var lines = System.IO.File.ReadAllLines(filePath);
+    public string[] Contents() {
+        var lines = System.IO.File.ReadAllLines(Path);
         return lines;
     }
 
