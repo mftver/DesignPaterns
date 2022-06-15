@@ -1,9 +1,16 @@
-﻿namespace Factory
+﻿using Model;
+
+namespace Factory
 {
     internal class OmniFactory
     {
-        public void read() {
-            throw new NotImplementedException();
+        public Sudoku CreateSudoku(string filePath) {
+            var sudokuString = ReadFile(filePath);
+        }
+        
+        private string[] ReadFile(string filePath) {
+            var lines = File.ReadAllLines(filePath);
+            return lines;
         }
     }
 }
