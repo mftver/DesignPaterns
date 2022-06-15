@@ -9,9 +9,9 @@ namespace Model
         private List<IValidatable> Groups { get; }
         private List<int> PossibleNumbers { get; }
 
-        public readonly int SubGroup;
+        private readonly SubGroup _subGroup;
 
-        public Cell(int number, List<IValidatable> groups, int subGroup)
+        public Cell(int number, List<IValidatable> groups, SubGroup subGroup)
         {
             if (number is < 0 or > 9)
             {
@@ -21,23 +21,18 @@ namespace Model
             Number = number;
             this.IsFixed = true;
             this.Groups = groups;
-            SubGroup = subGroup;
+            _subGroup = subGroup;
             PossibleNumbers = new List<int>
             {
                 1,2,3,4,5,6,7,8,9
             };
             PossibleNumbers.Remove(number);
-        }
-
-        public Cell(List<IValidatable> groups, int subGroup)
-        {
-            this.IsFixed = false;
-            this.Groups = groups;
-            SubGroup = subGroup;
-            PossibleNumbers = new List<int>
+            
+            // Add the cell to the groups
+            foreach (var group in groups.Where(group => group.GetType() == typeof(Group)))
             {
-                1,2,3,4,5,6,7,8,9
-            };
+                ((Group)group).AddCell(this);
+            }
         }
 
         public bool removePossibleNumber(int number)
@@ -45,7 +40,12 @@ namespace Model
             return number is > 0 and <= 9 && PossibleNumbers.Remove(number);
         }
 
-        public bool validate()
+        public int GetSubGroupId()
+        {
+            return _subGroup.Id;
+        }
+
+        public bool Validate()
         {
             return PossibleNumbers.Count > 0;
         }

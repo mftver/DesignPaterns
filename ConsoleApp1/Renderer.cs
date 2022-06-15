@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using System.Drawing;
+using Model;
 
 namespace Frontend;
 
@@ -27,12 +28,16 @@ public class Renderer
                 }
                 else
                 {
-                    Console.BackgroundColor = (ConsoleColor)cell.SubGroup;
-                    Console.ForegroundColor = (ConsoleColor)cell.SubGroup + 2;
+                    Console.BackgroundColor = (ConsoleColor)cell.GetSubGroupId();
+                    Console.ForegroundColor = (ConsoleColor)cell.GetSubGroupId() + 2;
                 }
                 Console.Write(cell.Number);
                 x++;
             }
+
+            // Reset console colors
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
             y++;
         }

@@ -18,7 +18,7 @@ namespace Model
         
         
 
-        public bool validate()
+        public bool Validate()
         {
             //validate cells and validate if the whole group contains integers multiple times
 
