@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{73745276-7D1D-4D5D-8BBF-6625D51D817D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factory", "Factory\Factory\Factory.csproj", "{E4F96B4C-F0F7-4DCC-A92E-3D649A1D9118}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factory", "Factory\Factory.csproj", "{E4F96B4C-F0F7-4DCC-A92E-3D649A1D9118}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sudokus", "Sudokus", "{9F793D8D-ED97-4F53-BB54-F736D8BBEE59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
