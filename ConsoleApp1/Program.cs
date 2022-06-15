@@ -15,7 +15,7 @@ namespace Frontend
 
             var factory = new OmniFactory();
 
-            var sudoku = factory.CreateSudoku(@"../../../../Sudokus/puzzle.4x4");
+            var sudoku = factory.CreateSudoku(@"../../../../Sudokus/puzzle.6x6");
 
             var renderer = new Renderer();
 
