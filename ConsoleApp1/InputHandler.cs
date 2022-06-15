@@ -24,6 +24,10 @@ public class InputHandler
             {ConsoleKey.RightArrow, () => MoveCursor(Direction.Right) },
             {ConsoleKey.DownArrow, () => MoveCursor(Direction.Down) },
             {ConsoleKey.LeftArrow, () => MoveCursor(Direction.Left) },
+            {ConsoleKey.W, () => MoveCursor(Direction.Up) },
+            {ConsoleKey.D, () => MoveCursor(Direction.Right) },
+            {ConsoleKey.S, () => MoveCursor(Direction.Down) },
+            {ConsoleKey.A, () => MoveCursor(Direction.Left) },
             // {ConsoleKey.Escape, () => _gameView.DrawEnd()}
         };
     }
