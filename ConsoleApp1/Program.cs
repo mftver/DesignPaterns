@@ -13,8 +13,9 @@ namespace Frontend
             Console.WindowHeight = 50;
             Console.CursorVisible = false;
 
-            var reader = new SudokuReader();
-            var sudoku = reader.Read(@"./Levels/TempleOfDoom.json");
+            var factory = new OmniFactory();
+
+            var sudoku = factory.CreateSudoku(@"../../../../Sudokus/puzzle.4x4");
 
             var renderer = new Renderer();
 
