@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using Factory;
+using Factory.models;
+using File = Factory.models.File;
 
 namespace Frontend
 {
@@ -15,7 +17,9 @@ namespace Frontend
 
             var factory = new OmniFactory();
 
-            var sudoku = factory.CreateSudoku(@"../../../../Sudokus/puzzle.6x6");
+            var testFile = new File(@"../../../../Sudokus/puzzle.9x9");
+
+            var sudoku = factory.Create(testFile);
 
             var renderer = new Renderer();
 
