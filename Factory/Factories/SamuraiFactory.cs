@@ -11,6 +11,11 @@ internal class SamuraiFactory : IFactory
     {
         //samurai is 21x21
         var grid = new Cell[21][];
+        
+        for (var i = 0; i < 21; i++)
+        {
+            grid[i] = new Cell[21];
+        }
 
         // read the file and get the 9x9 sudokus
         var rawSudokus = file.Contents();
@@ -136,6 +141,7 @@ internal class SamuraiFactory : IFactory
             // loop over all the characters in the 9x9 sudoku
             foreach (var c in rawSudoku)
             {
+                var cellNumber = c - '0';
                 // create new cell and pass the corresponding row and column
                 var subgroupId = calculateSubGroupIndex(rowId, columnId, sudokuNumber);
 
@@ -162,7 +168,7 @@ internal class SamuraiFactory : IFactory
                     }
                     else
                     {
-                        cell = new Cell(c,new List<IValidatable>()
+                        cell = new Cell(cellNumber,new List<IValidatable>()
                         {
                             rows[rowId],
                             columns[columnId],
@@ -171,7 +177,7 @@ internal class SamuraiFactory : IFactory
                 }
                 else
                 {
-                    cell = new Cell(c,new List<IValidatable>()
+                    cell = new Cell(cellNumber,new List<IValidatable>()
                     {
                         rows[rowId],
                         columns[columnId],
@@ -182,9 +188,11 @@ internal class SamuraiFactory : IFactory
                 rows[rowId].AddValidateable(cell);
                 columns[columnId].AddValidateable(cell);
                 subgroups[subgroupId].AddValidateable(cell);
-                
+
+                int x = CalculateXValue(sudokuNumber, columnId) - 1;
+                int y = CalculateYValue(sudokuNumber, rowId) - 1;
                 //add cell to 2d array
-                grid[CalculateYValue(sudokuNumber,rowId)][CalculateXValue(sudokuNumber,columnId)] = cell;
+                grid[y][x] = cell;
 
                 // if subgroup isn't already in the 9x9 sudoku, add it
                 if (!subSudoku.GetChildren().Contains(subgroups[subgroupId]))
