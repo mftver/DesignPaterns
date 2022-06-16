@@ -25,12 +25,17 @@ public class Sudoku
         // Create subscriptions
         foreach (var row in Grid)
         foreach (var cell in row)
+        {
+            if (cell == null) continue;
             cell.TriggerSubscription();
+        }
+
 
         // Broadcast their initial values
         foreach (var row in Grid)
         foreach (var cell in row)
         {
+            if (cell == null) continue;
             var nextVal = new NumberSwitch(0, cell.Number);
             cell.OnNext(nextVal);
         }
@@ -40,7 +45,7 @@ public class Sudoku
     {
         return FindCell(coordinate).TrySetNumber(number);
     }
-    
+
     public void Enter(Coordinate coordinate, int number)
     {
         FindCell(coordinate).SetNumber(number);

@@ -16,18 +16,36 @@ public class Group : IValidatable
         return _validatables.All(c => c.Validate());
     }
 
-    public void AddValidateable(IValidatable validateable)
+    public void AddValidatable(IValidatable validatable)
     {
-        _validatables.Add(validateable);
+        _validatables.Add(validatable);
     }
 
-    public void RemoveValidateables(IValidatable validateable)
+    public void RemoveValidatable(IValidatable validatable)
     {
-        _validatables.Remove(validateable);
+        _validatables.Remove(validatable);
     }
 
     public List<IValidatable> GetChildren()
     {
         return _validatables;
+    }
+
+    public List<Cell> Cells()
+    {
+        var cells = new List<Cell>();
+
+        foreach (var validatable in _validatables)
+            if (validatable.GetType() == typeof(Cell))
+            {
+                cells.Add(validatable as Cell);
+            }
+            else
+            {
+                var group = validatable as Group;
+                cells.AddRange(group.Cells());
+            }
+
+        return cells;
     }
 }

@@ -32,17 +32,11 @@ public class Renderer
                     Console.Write(' ');
                     continue;
                 }
-                
+
                 if (cursorPosition.IsEqual(new Coordinate(x, y)))
                 {
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
-                }
-                else
-                {
-                    //TODO: fix enum kleuren op samurai
-                    //Console.BackgroundColor = (ConsoleColor)cell.GetSubGroupId();
-                    //Console.ForegroundColor = (ConsoleColor)cell.GetSubGroupId() + 2;
                 }
 
                 Console.Write(cell.Number);
