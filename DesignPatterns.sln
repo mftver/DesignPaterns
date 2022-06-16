@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sudokus", "Sudokus", "{9F79
 		Sudokus\puzzle3.samurai = Sudokus\puzzle3.samurai
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{B045A68D-6684-4485-9ADC-8D55C24988B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{E4F96B4C-F0F7-4DCC-A92E-3D649A1D9118}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4F96B4C-F0F7-4DCC-A92E-3D649A1D9118}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4F96B4C-F0F7-4DCC-A92E-3D649A1D9118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B045A68D-6684-4485-9ADC-8D55C24988B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B045A68D-6684-4485-9ADC-8D55C24988B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B045A68D-6684-4485-9ADC-8D55C24988B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B045A68D-6684-4485-9ADC-8D55C24988B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
