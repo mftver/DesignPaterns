@@ -77,7 +77,7 @@ public class InputHandler
 
     private void FillInNumber(int number)
     {
-        var res = _sudoku.TryEnter(_cursorPosition, number);
+        _sudoku.Enter(_cursorPosition, number);
     }
     private void MoveCursor(Direction direction)
     {

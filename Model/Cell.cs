@@ -9,10 +9,10 @@ namespace Model
         private bool IsFixed { get; set; }
         private List<Group> Groups { get; }
         private List<int> PossibleNumbers { get; }
-
         private readonly SubGroup _subGroup;
-        
+        private readonly int _maxValue;
         private readonly List<IDpObserver<NumberSwitch>> _observers = new();
+        private bool _isCurrentNumberValid = true;
         
         public Cell(int number, bool isFixed, List<Group> groups, SubGroup subGroup, int maxValue)
         {
@@ -23,7 +23,8 @@ namespace Model
 
             Groups = groups;
             _subGroup = subGroup;
-            
+            _maxValue = maxValue;
+
             PossibleNumbers = new List<int>();
             for (var i = 0; i <= maxValue; i++)
                 PossibleNumbers.Add(i);
@@ -39,6 +40,9 @@ namespace Model
             IsFixed = isFixed;
         }
 
+        /**
+         * Tries to set the number the cell, but will not do so if it's validation fails
+         */
         public bool TrySetNumber(int newNumber)
         {
             if (IsFixed) return false;
@@ -50,6 +54,24 @@ namespace Model
             Number = newNumber;
             
             return true;
+        }
+
+        /**
+         * Sets the number of the cell regardless of whether it is a valid number
+         */
+        public void SetNumber(int newNumber)
+        {
+            if (IsFixed) return;
+            if (newNumber > _maxValue) return;
+            UpdatePossibleNumbers(new NumberSwitch(Number, newNumber));
+            Number = newNumber;
+            
+            // Print all possible numbers to the console
+            Console.WriteLine("Possible numbers for cell " + Number + ": ");
+            foreach (var number in PossibleNumbers)
+            {
+                Console.Write(number + " ");
+            }
         }
 
         public int GetSubGroupId() => _subGroup.Id;
@@ -76,8 +98,15 @@ namespace Model
         
         public void UpdatePossibleNumbers(NumberSwitch data)
         {
-            PossibleNumbers.Add(data.OldNumber);
-            PossibleNumbers.Remove(data.NewNumber);
+            // Do change numbers if their are not valid
+            var isNewNumberValid = PossibleNumbers.Contains(data.NewNumber);
+            
+            if(_isCurrentNumberValid)
+                PossibleNumbers.Add(data.OldNumber);
+            if(isNewNumberValid)
+                PossibleNumbers.Remove(data.NewNumber);
+            
+            _isCurrentNumberValid = isNewNumberValid;
         }
 
         /***

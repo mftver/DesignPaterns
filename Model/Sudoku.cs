@@ -39,9 +39,14 @@ public class Sudoku
     {
         return FindCell(coordinate).TrySetNumber(number);
     }
+    
+    public void Enter(Coordinate coordinate, int number)
+    {
+        FindCell(coordinate).SetNumber(number);
+    }
 
     private Cell FindCell(Coordinate coordinate)
     {
-        return Grid[coordinate.X][coordinate.Y];
+        return Grid[coordinate.Y][coordinate.X];
     }
 }
