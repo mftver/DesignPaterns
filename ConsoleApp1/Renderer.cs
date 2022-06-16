@@ -43,8 +43,8 @@ public class Renderer
                 }
                 else
                 {
-                    //Console.BackgroundColor = (ConsoleColor)cell.GetSubGroupId();
-                    //Console.ForegroundColor = (ConsoleColor)cell.GetSubGroupId() + 2;
+                    Console.BackgroundColor = GetConsoleColor(cell.GetSubGroupId());
+                    Console.ForegroundColor = GetConsoleColor(cell.GetSubGroupId() + 2);
                 }
                 Console.Write(cell.Number);
                 x++;
@@ -56,5 +56,15 @@ public class Renderer
             Console.WriteLine();
             y++;
         }
+    }
+    
+    private ConsoleColor GetConsoleColor(int seed)
+    {
+        // Get number of ConsoleColor
+        var length = Enum.GetNames(typeof(ConsoleColor)).Length;
+        
+        Math.DivRem(seed, length, out var remainder);
+        
+        return (ConsoleColor)remainder;
     }
 }
