@@ -6,30 +6,28 @@ public class Group : IValidatable
 {
     public Group()
     {
-        _validateables = new List<IValidatable>();
+        _validatables = new List<IValidatable>();
     }
 
-    private List<IValidatable> _validateables { get; }
+    private List<IValidatable> _validatables { get; }
 
     public bool Validate()
     {
-        //validate cells and validate if the whole group contains integers multiple times
-
-        throw new NotImplementedException();
+        return _validatables.All(c => c.Validate());
     }
 
     public void AddValidateable(IValidatable validateable)
     {
-        _validateables.Add(validateable);
+        _validatables.Add(validateable);
     }
-    
-       public void RemoveValidateables(IValidatable validateable)
+
+    public void RemoveValidateables(IValidatable validateable)
     {
-        _validateables.Remove(validateable);
+        _validatables.Remove(validateable);
     }
-       
-       public List<IValidatable> GetChildren()
+
+    public List<IValidatable> GetChildren()
     {
-        return _validateables;
+        return _validatables;
     }
 }

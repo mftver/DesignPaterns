@@ -1,46 +1,121 @@
 ﻿using Model.Interfaces;
+using Model.Interfaces.Observer;
 
-namespace Model;
-
-public class Cell : IValidatable
+namespace Model
 {
-    private readonly SubGroup _subGroup;
-
-    public Cell(int number, List<IValidatable> groups, SubGroup subGroup)
+    public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<NumberSwitch>
     {
-        if (number is < 0 or > 9) throw new ArgumentOutOfRangeException();
-
-        Number = number;
-        IsFixed = true;
-        Groups = groups;
-        _subGroup = subGroup;
-        PossibleNumbers = new List<int>
+        public int Number { get; private set; }
+        private bool IsFixed { get; set; }
+        private List<Group> Groups { get; }
+        private List<int> PossibleNumbers { get; }
+        private readonly SubGroup _subGroup;
+        private readonly int _maxValue;
+        private readonly List<IDpObserver<NumberSwitch>> _observers = new();
+        private bool _isCurrentNumberValid = true;
+        
+        public Cell(int number, bool isFixed, List<Group> groups, SubGroup subGroup, int maxValue)
         {
-            1, 2, 3, 4, 5, 6, 7, 8, 9
-        };
-        RemovePossibleNumber(number);
+            if (number < 0 || number > maxValue)
+            {
+                throw new ArgumentException("Number must be between 0 and " + maxValue);
+            }
 
-        // Add the cell to the groups
-        foreach (var group in groups.Where(group => group.GetType() == typeof(Group))) ((Group)group).AddValidateable(this);
-    }
+            Groups = groups;
+            _subGroup = subGroup;
+            _maxValue = maxValue;
 
-    public int Number { get; }
-    private bool IsFixed { get; }
-    private List<IValidatable> Groups { get; }
-    private List<int> PossibleNumbers { get; }
+            PossibleNumbers = new List<int>();
+            for (var i = 0; i <= maxValue; i++)
+                PossibleNumbers.Add(i);
+            
+            
+            // Add the cell to the groups
+            foreach (var group in groups)
+            {
+                group.AddCell(this);
+            }
 
-    public bool Validate()
-    {
-        return PossibleNumbers.Count > 0;
-    }
+            if(!TrySetNumber(number)) throw new ArgumentException("Can't create new cell with number " + number);
+            IsFixed = isFixed;
+        }
 
-    public bool RemovePossibleNumber(int number)
-    {
-        return number is > 0 and <= 9 && PossibleNumbers.Remove(number);
-    }
+        /**
+         * Tries to set the number the cell, but will not do so if it's validation fails
+         */
+        public bool TrySetNumber(int newNumber)
+        {
+            if (IsFixed) return false;
+            if (!PossibleNumbers.Contains(newNumber)) return false;
 
-    public int GetSubGroupId()
-    {
-        return _subGroup.Id;
+            var update = new NumberSwitch(Number, newNumber);
+            OnNext(update);
+            UpdatePossibleNumbers(update);
+            Number = newNumber;
+            
+            return true;
+        }
+
+        /**
+         * Sets the number of the cell regardless of whether it is a valid number
+         */
+        public void SetNumber(int newNumber)
+        {
+            if (IsFixed) return;
+            if (newNumber > _maxValue) return;
+            UpdatePossibleNumbers(new NumberSwitch(Number, newNumber));
+            Number = newNumber;
+            
+            // Print all possible numbers to the console
+            Console.WriteLine("Possible numbers for cell " + Number + ": ");
+            foreach (var number in PossibleNumbers)
+            {
+                Console.Write(number + " ");
+            }
+        }
+
+        public int GetSubGroupId() => _subGroup.Id;
+
+        public bool Validate()
+        {
+            return PossibleNumbers.All(val => val == 0);
+        }
+
+        public void Subscribe(IDpObserver<NumberSwitch> observer)
+        {
+            // Do not allow duplicate subscriptions
+            if (_observers.Contains(observer)) return;
+            _observers.Add(observer);
+        }
+
+        public void OnNext(NumberSwitch data)
+        {
+            foreach (var observer in _observers)
+            {
+                observer.UpdatePossibleNumbers(data);
+            }
+        }
+        
+        public void UpdatePossibleNumbers(NumberSwitch data)
+        {
+            // Do change numbers if their are not valid
+            var isNewNumberValid = PossibleNumbers.Contains(data.NewNumber);
+            
+            if(_isCurrentNumberValid)
+                PossibleNumbers.Add(data.OldNumber);
+            if(isNewNumberValid)
+                PossibleNumbers.Remove(data.NewNumber);
+            
+            _isCurrentNumberValid = isNewNumberValid;
+        }
+
+        /***
+         * Subscribes to all cells in every validation group to track if their value changes
+         */
+        public void TriggerSubscription()
+        {
+            foreach (var cell in Groups.SelectMany(group => group.Cells))
+                cell.Subscribe(this);
+        }
     }
 }

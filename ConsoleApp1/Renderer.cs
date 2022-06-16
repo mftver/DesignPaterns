@@ -7,6 +7,13 @@ public class Renderer
     public void Draw(Sudoku sudoku, Coordinate cursorPosition)
     {
         DrawSudoku(sudoku, cursorPosition);
+        if (sudoku.Validate())
+            DrawVictory();
+    }
+
+    private void DrawVictory()
+    {
+        Console.WriteLine("You win!");
     }
 
     private void DrawSudoku(Sudoku sudoku, Coordinate cursorPosition)
