@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Model;
+﻿using Model;
 
 namespace Frontend;
 
@@ -35,7 +34,7 @@ public class Renderer
                     Console.Write(" ");
                     continue;
                 }
-                
+
                 if (cursorPosition.IsEqual(new Coordinate(x, y)))
                 {
                     Console.BackgroundColor = ConsoleColor.White;
@@ -46,6 +45,7 @@ public class Renderer
                     Console.BackgroundColor = GetConsoleColor(cell.GetSubGroupId());
                     Console.ForegroundColor = GetConsoleColor(cell.GetSubGroupId() + 2);
                 }
+
                 Console.Write(cell.Number);
                 x++;
             }
@@ -57,7 +57,7 @@ public class Renderer
             y++;
         }
     }
-    
+
     private ConsoleColor GetConsoleColor(int seed)
     {
         var length = Enum.GetNames(typeof(ConsoleColor)).Length;
