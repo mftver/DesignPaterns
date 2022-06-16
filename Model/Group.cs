@@ -15,11 +15,6 @@ namespace Model
         {
             Cells.Add(cell);
         }
-        public bool Validate()
-        {
-            //validate cells and validate if the whole group contains integers multiple times
-
-            throw new NotImplementedException();
-        }
+        public bool Validate() => Cells.All(c => c.Validate());
     }
 }

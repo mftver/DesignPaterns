@@ -57,8 +57,6 @@ public class InputHandler
 
     public void Run()
     {
-        // _sudoku.Updated += (sender, game1) => _renderer.Draw(game1);
-
         while (!_quit)
         {
             _keyPressed = Console.ReadKey().Key;
@@ -77,7 +75,7 @@ public class InputHandler
 
     private void FillInNumber(int number)
     {
-        _sudoku.Enter(_cursorPosition, number);
+        _sudoku.TryEnter(_cursorPosition, number);
     }
     private void MoveCursor(Direction direction)
     {

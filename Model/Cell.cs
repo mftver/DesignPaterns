@@ -78,7 +78,7 @@ namespace Model
 
         public bool Validate()
         {
-            return PossibleNumbers.Any(x => x != 0);
+            return PossibleNumbers.All(val => val == 0);
         }
 
         public void Subscribe(IDpObserver<NumberSwitch> observer)
