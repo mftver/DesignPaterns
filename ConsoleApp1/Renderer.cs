@@ -43,8 +43,8 @@ public class Renderer
                 }
                 else
                 {
-                    // Console.BackgroundColor = (ConsoleColor)cell.GetSubGroupId();
-                    // Console.ForegroundColor = (ConsoleColor)cell.GetSubGroupId() + 2;
+                    //Console.BackgroundColor = (ConsoleColor)cell.GetSubGroupId();
+                    //Console.ForegroundColor = (ConsoleColor)cell.GetSubGroupId() + 2;
                 }
                 Console.Write(cell.Number);
                 x++;
