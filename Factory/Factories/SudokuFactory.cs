@@ -20,15 +20,15 @@ namespace Factory.Factories
             
             // Fill grid
             var grid = new Cell[gridSize][];
-            for (var y = 0; y < gridSize; y++)
+            for (var column = 0; column < gridSize; column++)
             {
-                grid[y] = new Cell[gridSize];
-                var rowGroup = rowGroups[y];
+                grid[column] = new Cell[gridSize];
+                var rowGroup = rowGroups[column];
                 
-                for (var x = 0; x < gridSize; x++)
+                for (var row = 0; row < gridSize; row++)
                 {
-                    var cellValue = sudokuString[y * gridSize + x] - '0';
-                    var subGroupIndex = calculateSubGroupIndex(x, y , gridSize);
+                    var cellValue = sudokuString[column * gridSize + row] - '0';
+                    var subGroupIndex = calculateSubGroupIndex(row, column , gridSize);
 
                     var subGroup = subGroups.ElementAtOrDefault(subGroupIndex);
                     if (subGroup == null)
@@ -37,14 +37,16 @@ namespace Factory.Factories
                         subGroups.Insert(subGroupIndex, subGroup);
                     }
                     
-                    var groups = new List<IValidatable>
+                    var groups = new List<Group>
                     {
-                        columnGroups[x],
+                        columnGroups[row],
                         rowGroup,
                         subGroup,
                     };
                     
-                    grid[y][x] = new Cell(cellValue, groups, subGroup);
+                    var isFixed = cellValue != 0;
+                    
+                    grid[column][row] = new Cell(cellValue, isFixed, groups, subGroup, gridSize);
                 }
             }
 
@@ -53,6 +55,7 @@ namespace Factory.Factories
             allGroups.AddRange(rowGroups);
             allGroups.AddRange(subGroups);
             
+            // Tell cells to subscribe to each other
             return new Sudoku(grid, allGroups);
         }
         

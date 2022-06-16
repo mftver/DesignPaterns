@@ -28,7 +28,30 @@ public class InputHandler
             {ConsoleKey.D, () => MoveCursor(Direction.Right) },
             {ConsoleKey.S, () => MoveCursor(Direction.Down) },
             {ConsoleKey.A, () => MoveCursor(Direction.Left) },
-            // {ConsoleKey.Escape, () => _gameView.DrawEnd()}
+            // Number keys for filling in numbers
+            {ConsoleKey.D1, () => FillInNumber(1) },
+            {ConsoleKey.D2, () => FillInNumber(2) },
+            {ConsoleKey.D3, () => FillInNumber(3) },
+            {ConsoleKey.D4, () => FillInNumber(4) },
+            {ConsoleKey.D5, () => FillInNumber(5) },
+            {ConsoleKey.D6, () => FillInNumber(6) },
+            {ConsoleKey.D7, () => FillInNumber(7) },
+            {ConsoleKey.D8, () => FillInNumber(8) },
+            {ConsoleKey.D9, () => FillInNumber(9) },
+            {ConsoleKey.D0, () => FillInNumber(0) },
+            
+            // Numpad 
+            {ConsoleKey.NumPad0, () => FillInNumber(0) },
+            {ConsoleKey.NumPad1, () => FillInNumber(1) },
+            {ConsoleKey.NumPad2, () => FillInNumber(2) },
+            {ConsoleKey.NumPad3, () => FillInNumber(3) },
+            {ConsoleKey.NumPad4, () => FillInNumber(4) },
+            {ConsoleKey.NumPad5, () => FillInNumber(5) },
+            {ConsoleKey.NumPad6, () => FillInNumber(6) },
+            {ConsoleKey.NumPad7, () => FillInNumber(7) },
+            {ConsoleKey.NumPad8, () => FillInNumber(8) },
+            {ConsoleKey.NumPad9, () => FillInNumber(9) },
+            
         };
     }
 
@@ -45,11 +68,17 @@ public class InputHandler
             
             action.Invoke();
             _keyPressed = 0;
+            
+            _renderer.Draw(_sudoku, _cursorPosition);
         }
 
         Console.ReadLine();
     }
 
+    private void FillInNumber(int number)
+    {
+        var res = _sudoku.TryEnter(_cursorPosition, number);
+    }
     private void MoveCursor(Direction direction)
     {
         switch (direction)
@@ -69,7 +98,5 @@ public class InputHandler
             default:
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, "Unknown direction");
         }
-        
-        _renderer.Draw(_sudoku, _cursorPosition);
     }
 }

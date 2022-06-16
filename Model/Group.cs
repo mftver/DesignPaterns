@@ -4,20 +4,17 @@ namespace Model
 {
     public class Group : IValidatable
     {
-        private List<Cell> _cells { get; }
+        public List<Cell> Cells { get; private set; }
 
         public Group()
         {
-            _cells = new List<Cell>();
+            Cells = new List<Cell>();
         }
         
         public void AddCell(Cell cell)
         {
-            _cells.Add(cell);
+            Cells.Add(cell);
         }
-        
-        
-
         public bool Validate()
         {
             //validate cells and validate if the whole group contains integers multiple times
