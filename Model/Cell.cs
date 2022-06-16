@@ -6,7 +6,7 @@ namespace Model
     public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<NumberSwitch>
     {
         public int Number { get; private set; }
-        public bool IsFixed { get; private set; }
+        private bool IsFixed { get; set; }
         private List<Group> Groups { get; }
         private List<int> PossibleNumbers { get; }
 
@@ -46,16 +46,13 @@ namespace Model
 
             var update = new NumberSwitch(Number, newNumber);
             OnNext(update);
-            Update(update);
+            UpdatePossibleNumbers(update);
             Number = newNumber;
             
             return true;
         }
 
-        public int GetSubGroupId()
-        {
-            return _subGroup.Id;
-        }
+        public int GetSubGroupId() => _subGroup.Id;
 
         public bool Validate()
         {
@@ -73,19 +70,21 @@ namespace Model
         {
             foreach (var observer in _observers)
             {
-                observer.Update(data);
+                observer.UpdatePossibleNumbers(data);
             }
         }
-
-        public void Update(NumberSwitch data)
+        
+        public void UpdatePossibleNumbers(NumberSwitch data)
         {
             PossibleNumbers.Add(data.OldNumber);
             PossibleNumbers.Remove(data.NewNumber);
         }
 
+        /***
+         * Subscribes to all cells in every validation group to track if their value changes
+         */
         public void TriggerSubscription()
         {
-            // Subscribe to all cells in every group
             foreach (var cell in Groups.SelectMany(group => group.Cells))
                 cell.Subscribe(this);
         }
