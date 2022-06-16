@@ -21,8 +21,7 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
         PossibleNumbers = new List<int>();
         for (var i = 0; i <= maxValue; i++)
             PossibleNumbers.Add(i);
-
-
+        
         // Add the cell to the groups
         foreach (var group in groups) group.AddValidatable(this);
 
@@ -31,7 +30,7 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
     }
 
     public int Number { get; private set; }
-    private bool IsFixed { get; }
+    public bool IsFixed { get; private set; }
     private List<Group> Groups { get; }
     private List<int> PossibleNumbers { get; }
 

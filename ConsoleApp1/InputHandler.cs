@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Game;
+using Model;
 
 namespace Frontend;
 
@@ -28,6 +29,8 @@ public class InputHandler
             { ConsoleKey.D, () => MoveCursor(Direction.Right) },
             { ConsoleKey.S, () => MoveCursor(Direction.Down) },
             { ConsoleKey.A, () => MoveCursor(Direction.Left) },
+            { ConsoleKey.Enter, () => SolveWithBacktracking() },
+            
             // Number keys for filling in numbers
             { ConsoleKey.D1, () => FillInNumber(1) },
             { ConsoleKey.D2, () => FillInNumber(2) },
@@ -53,6 +56,8 @@ public class InputHandler
             { ConsoleKey.NumPad9, () => FillInNumber(9) }
         };
     }
+
+    private void SolveWithBacktracking() => new BacktraceSolver().Solve(_sudoku);
 
     public void Run()
     {

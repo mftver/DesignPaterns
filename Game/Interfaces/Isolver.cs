@@ -1,6 +1,8 @@
-﻿namespace Game.Interfaces;
+﻿using Model;
+
+namespace Game.Interfaces;
 
 internal interface ISolver
 {
-    void Solve();
+    void Solve(Sudoku sudoku);
 }

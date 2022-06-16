@@ -51,7 +51,7 @@ public class Sudoku
         FindCell(coordinate).SetNumber(number);
     }
 
-    private Cell FindCell(Coordinate coordinate)
+    public Cell FindCell(Coordinate coordinate)
     {
         return Grid[coordinate.Y][coordinate.X];
     }
