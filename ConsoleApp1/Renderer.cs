@@ -60,7 +60,11 @@ public class Renderer
 
     private ConsoleColor GetConsoleColor(int seed)
     {
+        // Get number of ConsoleColor
         var length = Enum.GetNames(typeof(ConsoleColor)).Length;
-        return (ConsoleColor)Math.DivRem(seed, length, out _);
+        
+        Math.DivRem(seed, length, out var remainder);
+        
+        return (ConsoleColor)remainder;
     }
 }
