@@ -1,7 +1,5 @@
-﻿namespace Game
-{
-    internal class Game
-    {
+﻿namespace Game;
 
-    }
+internal class Game
+{
 }

@@ -1,31 +1,28 @@
 ﻿using System.Text;
 using Factory;
-using Factory.models;
 using File = Factory.models.File;
 
-namespace Frontend
+namespace Frontend;
+
+internal class Program
 {
-    class Program
+    private static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Console.OutputEncoding = Encoding.UTF8;
+        Console.OutputEncoding = Encoding.UTF8;
 
-            Console.WindowWidth = 200;
-            Console.WindowHeight = 50;
-            Console.CursorVisible = false;
+        Console.WindowWidth = 200;
+        Console.WindowHeight = 50;
+        Console.CursorVisible = false;
 
-            var factory = new OmniFactory();
+        var factory = new OmniFactory();
 
-            var testFile = new File(@"../../../../Sudokus/puzzle.4x4");
+        var testFile = new File(@"../../../../Sudokus/puzzle.samurai");
 
-            var sudoku = factory.Create(testFile);
+        var sudoku = factory.Create(testFile);
 
-            var renderer = new Renderer();
+        var renderer = new Renderer();
 
-            var inputReader = new InputHandler(renderer, sudoku);
-            inputReader.Run();
-        }
+        var inputReader = new InputHandler(renderer, sudoku);
+        inputReader.Run();
     }
 }
-

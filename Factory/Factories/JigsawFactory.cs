@@ -2,23 +2,22 @@
 using Model;
 using File = Factory.models.File;
 
-namespace Factory.Factories
+namespace Factory.Factories;
+
+internal class JigsawFactory : IFactory
 {
-    internal class JigsawFactory : IFactory
+    public Sudoku Create(File file)
     {
-        public Sudoku Create(File file)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
+    }
 
-        public bool Supports(File file)
+    public bool Supports(File file)
+    {
+        var fileExtensions = new List<string>
         {
-            var fileExtensions = new List<string>()
-            {
-                ".jigsaw"
-            };
+            ".jigsaw"
+        };
 
-            return fileExtensions.Contains(file.Extension);
-        }
+        return fileExtensions.Contains(file.Extension);
     }
 }

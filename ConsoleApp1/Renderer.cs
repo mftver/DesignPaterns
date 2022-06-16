@@ -28,6 +28,14 @@ public class Renderer
             var x = 0;
             foreach (var cell in row)
             {
+                if (cell == null)
+                {
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(" ");
+                    continue;
+                }
+                
                 if (cursorPosition.IsEqual(new Coordinate(x, y)))
                 {
                     Console.BackgroundColor = ConsoleColor.White;
@@ -35,8 +43,8 @@ public class Renderer
                 }
                 else
                 {
-                    Console.BackgroundColor = (ConsoleColor)cell.GetSubGroupId();
-                    Console.ForegroundColor = (ConsoleColor)cell.GetSubGroupId() + 2;
+                    //Console.BackgroundColor = (ConsoleColor)cell.GetSubGroupId();
+                    //Console.ForegroundColor = (ConsoleColor)cell.GetSubGroupId() + 2;
                 }
                 Console.Write(cell.Number);
                 x++;

@@ -1,7 +1,6 @@
-﻿namespace Game.Interfaces
+﻿namespace Game.Interfaces;
+
+internal interface ISolver
 {
-    internal interface ISolver
-    {
-        void Solve();
-    }
+    void Solve();
 }
