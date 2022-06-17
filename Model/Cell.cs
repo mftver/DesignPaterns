@@ -94,10 +94,6 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
         if (newNumber > MaxValue) return;
         UpdatePossibleNumbers(new NumberSwitch(Number, newNumber));
         Number = newNumber;
-
-        // Print all possible numbers to the console
-        Console.WriteLine("Possible numbers for cell " + Number + ": ");
-        foreach (var number in PossibleNumbers) Console.Write(number + " ");
     }
 
     public int GetSubGroupId()
