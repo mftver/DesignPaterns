@@ -16,32 +16,17 @@ public class BacktraceSolver : ISolver
 
     public void Solve()
     {
-        var startCoordinate = new Coordinate(0, 0);
-
-        if (_sudoku.FindCell(startCoordinate)!.IsFixed)
-        {
-            startCoordinate = MoveCoordinate(startCoordinate);
-        }
-
-        SolveCell(startCoordinate);
+        SolveCell();
     }
 
-    private bool SolveCell(Coordinate coordinate)
+    private bool SolveCell()
     {
-        var cell = _sudoku.FindCell(coordinate);
-
-        for (var i = 1; i <= cell.MaxValue; i++)
+        var cell = NextCell();
+        if (cell == null) return true;
+        foreach (var cellPossibleNumber in cell.PossibleNumbers.Where(x => x != 0).ToList())
         {
-            //if (isSolved) return true;
-            if (!cell.TrySetNumber(7)) continue;
-        
-            var nextCoordinate = MoveCoordinate(coordinate);
-        
-            if (nextCoordinate == null)
-            {
-                return _sudoku.Validate();
-            }
-            return SolveCell(nextCoordinate);
+            if (!cell.TrySetNumber(cellPossibleNumber)) continue;
+            if (SolveCell()) return true;
         }
 
         return false;
@@ -52,25 +37,8 @@ public class BacktraceSolver : ISolver
         return coordinate.X == _gridSize - 1 && coordinate.Y == _gridSize - 1;
     }
 
-    private Coordinate? MoveCoordinate(Coordinate currentCoordinate)
+    private Cell? NextCell()
     {
-        var newCoordinate = new Coordinate(currentCoordinate.X, currentCoordinate.Y);
-
-        if (newCoordinate.X == _gridSize - 1)
-        {
-            newCoordinate.X = 0;
-            newCoordinate.Y++;
-        }
-        else
-        {
-            newCoordinate.X++;
-        }
-
-        if (isLastCoordinate(newCoordinate)) return null;
-        var cell = _sudoku.FindCell(newCoordinate);
-
-        if (cell == null || cell.IsFixed) return MoveCoordinate(newCoordinate);
-
-        return newCoordinate;
+        return _sudoku.Grid.OfType<Cell>().FirstOrDefault(cell => !cell.IsFixed && cell.Number == 0);
     }
 }
