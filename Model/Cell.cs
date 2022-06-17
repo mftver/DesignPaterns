@@ -31,7 +31,7 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
 
     public int Number { get; private set; }
     public bool IsFixed { get; private set; }
-    private List<Group> Groups { get; }
+    public List<Group> Groups { get; }
     private List<int> PossibleNumbers { get; }
 
     public void Subscribe(IDpObserver<NumberSwitch> observer)
@@ -39,6 +39,11 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
         // Do not allow duplicate subscriptions
         if (_observers.Contains(observer)) return;
         _observers.Add(observer);
+    }
+    
+    public void addGroups(List<Group> groups)
+    {
+        foreach (var group in groups) group.AddValidatable(this);
     }
 
     public void OnNext(NumberSwitch data)
