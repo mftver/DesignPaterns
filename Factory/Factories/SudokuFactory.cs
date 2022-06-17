@@ -20,9 +20,11 @@ internal class SudokuFactory : IFactory
 
         // Fill grid
         var grid = new Cell[gridSize][];
+
+        for (var i = 0; i < gridSize; i++) grid[i] = new Cell[gridSize];
+
         for (var x = 0; x < gridSize; x++)
         {
-            grid[x] = new Cell[gridSize];
             for (var y = 0; y < gridSize; y++)
             {
                 var cellValue = sudokuString[x * gridSize + y] - '0';
@@ -42,7 +44,7 @@ internal class SudokuFactory : IFactory
                     subGroup
                 };
 
-                grid[x][y] = new Cell(cellValue, groups, subGroup, gridSize);
+                grid[y][x] = new Cell(cellValue, groups, subGroup, gridSize);
             }
         }
 
