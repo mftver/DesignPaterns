@@ -4,6 +4,7 @@ namespace Frontend;
 
 public class Renderer
 {
+    public bool highlightInvalidCells = false;
     public void Draw(Sudoku sudoku, Coordinate cursorPosition)
     {
         DrawSudoku(sudoku, cursorPosition);
@@ -39,9 +40,11 @@ public class Renderer
                 {
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
-                }
-                else
+                } else if (highlightInvalidCells && !cell.IsFixed && cell.Number != 0  && !cell.Validate())
                 {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                }else {
                     Console.BackgroundColor = GetConsoleColor(cell.GetSubGroupId());
                     Console.ForegroundColor = GetConsoleColor(cell.GetSubGroupId() + 2);
                 }

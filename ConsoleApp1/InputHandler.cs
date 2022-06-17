@@ -30,6 +30,7 @@ public class InputHandler
             { ConsoleKey.S, () => MoveCursor(Direction.Down) },
             { ConsoleKey.A, () => MoveCursor(Direction.Left) },
             { ConsoleKey.Enter, () => SolveWithBacktracking() },
+            { ConsoleKey.C, () => ToggleValidationCheck() },
             
             // Number keys for filling in numbers
             { ConsoleKey.D1, () => FillInNumber(1) },
@@ -55,6 +56,11 @@ public class InputHandler
             { ConsoleKey.NumPad8, () => FillInNumber(8) },
             { ConsoleKey.NumPad9, () => FillInNumber(9) }
         };
+    }
+
+    private void ToggleValidationCheck()
+    {
+        _renderer.highlightInvalidCells = !_renderer.highlightInvalidCells;
     }
 
     private void SolveWithBacktracking()
@@ -83,7 +89,7 @@ public class InputHandler
 
     private void FillInNumber(int number)
     {
-        _sudoku.TryEnter(_cursorPosition, number);
+        _sudoku.Enter(_cursorPosition, number);
     }
 
     private void MoveCursor(Direction direction)

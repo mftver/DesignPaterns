@@ -20,15 +20,15 @@ internal class SudokuFactory : IFactory
 
         // Fill grid
         var grid = new Cell[gridSize][];
-        for (var row = 0; row < gridSize; row++)
+        for (var x = 0; x < gridSize; x++)
         {
-            grid[row] = new Cell[gridSize];
-            var rowGroup = rowGroups[row];
+            grid[x] = new Cell[gridSize];
+            var rowGroup = rowGroups[x];
 
-            for (var column = 0; column < gridSize; column++)
+            for (var y = 0; y < gridSize; y++)
             {
-                var cellValue = sudokuString[row * gridSize + column] - '0';
-                var subGroupIndex = calculateSubGroupIndex(row, column, gridSize);
+                var cellValue = sudokuString[x + gridSize * y] - '0';
+                var subGroupIndex = calculateSubGroupIndex(x, y, gridSize);
 
                 var subGroup = subGroups.ElementAtOrDefault(subGroupIndex);
                 if (subGroup == null)
@@ -39,12 +39,12 @@ internal class SudokuFactory : IFactory
 
                 var groups = new List<Group>
                 {
-                    columnGroups[column],
+                    columnGroups[y],
                     rowGroup,
                     subGroup
                 };
 
-                grid[row][column] = new Cell(cellValue, groups, subGroup, gridSize);
+                grid[x][y] = new Cell(cellValue, groups, subGroup, gridSize);
             }
         }
 
