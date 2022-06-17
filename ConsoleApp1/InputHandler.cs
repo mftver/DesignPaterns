@@ -89,7 +89,7 @@ public class InputHandler
 
     private void FillInNumber(int number)
     {
-        _sudoku.Enter(_cursorPosition, number);
+        _sudoku.Enter(new Coordinate(_cursorPosition.Y,_cursorPosition.X), number);
     }
 
     private void MoveCursor(Direction direction)
