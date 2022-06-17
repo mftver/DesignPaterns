@@ -71,6 +71,8 @@ public class InputHandler
 
     public void Run()
     {
+        _renderer.Draw(_sudoku, _cursorPosition);
+
         while (!_quit)
         {
             _keyPressed = Console.ReadKey().Key;
