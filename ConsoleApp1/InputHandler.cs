@@ -1,4 +1,6 @@
-﻿using Model;
+﻿using Game;
+using Model;
+using Model.Interfaces;
 
 namespace Frontend;
 
@@ -10,6 +12,7 @@ public class InputHandler
     private readonly Sudoku _sudoku;
     private ConsoleKey _keyPressed;
     private bool _quit;
+    private IState _state;
 
     public InputHandler(Renderer renderer, Sudoku sudoku)
     {
@@ -17,6 +20,7 @@ public class InputHandler
         _sudoku = sudoku;
         _quit = false;
         _cursorPosition = new Coordinate(0, 0);
+        _state = new NormalState();
 
         _actionKeys = new Dictionary<ConsoleKey, Action>
         {
@@ -28,6 +32,10 @@ public class InputHandler
             { ConsoleKey.D, () => MoveCursor(Direction.Right) },
             { ConsoleKey.S, () => MoveCursor(Direction.Down) },
             { ConsoleKey.A, () => MoveCursor(Direction.Left) },
+            { ConsoleKey.Enter, () => SolveWithBacktracking() },
+            { ConsoleKey.C, () => ToggleValidationCheck() },
+            { ConsoleKey.H, () => ChangeHelperState() },
+            
             // Number keys for filling in numbers
             { ConsoleKey.D1, () => FillInNumber(1) },
             { ConsoleKey.D2, () => FillInNumber(2) },
@@ -53,9 +61,34 @@ public class InputHandler
             { ConsoleKey.NumPad9, () => FillInNumber(9) }
         };
     }
+    
+    private void ChangeHelperState()
+    {
+        if (_state.GetType() == typeof(NormalState))
+        {
+            _state = new HelperState();
+        }
+        else
+        {
+            _state = new NormalState();
+        }
+    }
+
+    private void ToggleValidationCheck()
+    {
+        _renderer.highlightInvalidCells = !_renderer.highlightInvalidCells;
+    }
+
+    private void SolveWithBacktracking()
+    {
+        var backTracer = new BacktraceSolver(_sudoku);
+        backTracer.Solve();
+    } 
 
     public void Run()
     {
+        _renderer.Draw(_sudoku, _cursorPosition,_state);
+
         while (!_quit)
         {
             _keyPressed = Console.ReadKey().Key;
@@ -66,7 +99,7 @@ public class InputHandler
             action.Invoke();
             _keyPressed = 0;
 
-            _renderer.Draw(_sudoku, _cursorPosition);
+            _renderer.Draw(_sudoku, _cursorPosition,_state);
         }
 
         Console.ReadLine();
@@ -74,7 +107,14 @@ public class InputHandler
 
     private void FillInNumber(int number)
     {
-        _sudoku.TryEnter(_cursorPosition, number);
+        if (_state.GetType() == typeof(NormalState))
+        {
+            _sudoku.Enter(new Coordinate(_cursorPosition.Y,_cursorPosition.X), number);
+        }
+        else
+        {
+            _sudoku.EnterHelper(new Coordinate(_cursorPosition.Y,_cursorPosition.X), number);
+        }
     }
 
     private void MoveCursor(Direction direction)
@@ -88,7 +128,7 @@ public class InputHandler
                 if (_cursorPosition.X != _sudoku.Grid.GetLength(0) - 1) _cursorPosition.X++;
                 break;
             case Direction.Down:
-                if (_cursorPosition.Y != _sudoku.Grid[_cursorPosition.Y].GetLength(0) - 1) _cursorPosition.Y++;
+                if (_cursorPosition.Y != _sudoku.Grid.GetLength(1) - 1) _cursorPosition.Y++;
                 break;
             case Direction.Left:
                 if (_cursorPosition.X != 0) _cursorPosition.X--;

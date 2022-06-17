@@ -31,11 +31,9 @@ internal class SamuraiFactory : BaseSudokuFactory
         return new Sudoku(grid, subSudokus);
     }
 
-    private Cell[][] mergeSudokus(List<Sudoku> subSudokus)
+    private Cell[,] mergeSudokus(List<Sudoku> subSudokus)
     {
-        var grid = new Cell[21][];
-
-        for (var i = 0; i < 21; i++) grid[i] = new Cell[21];
+        var grid = new Cell[21,21];
 
         // put top left sudoku in the top left quadrant
         grid = putSudokuOnGrid(grid, subSudokus.ElementAt(0), 0, 0);
@@ -54,7 +52,7 @@ internal class SamuraiFactory : BaseSudokuFactory
         return grid;
     }
 
-    private Cell[][] putMiddleSudokuOnGrid(Cell[][] grid, Sudoku sudoku)
+    private Cell[,] putMiddleSudokuOnGrid(Cell[,] grid, Sudoku sudoku)
     {
         for (var i = 0; i < 9; i++)
         {
@@ -62,23 +60,23 @@ internal class SamuraiFactory : BaseSudokuFactory
             {
                 if (i < 3 && j < 3)
                 {
-                    grid[i][j] = mergeCell(grid[i + 6][j + 6], sudoku.Grid[i][j]);
+                    grid[i,j] = mergeCell(grid[i + 6,j + 6], sudoku.Grid[i,j]);
                 }
                 else if (i > 5 && j < 3)
                 {
-                    grid[i][j] = mergeCell(grid[i + 6][j + 6], sudoku.Grid[i][j]);
+                    grid[i,j] = mergeCell(grid[i + 6,j + 6], sudoku.Grid[i,j]);
                 }
                 else if (i < 3 && j > 5)
                 {
-                    grid[i][j] = mergeCell(grid[i + 6][j + 6], sudoku.Grid[i][j]);
+                    grid[i,j] = mergeCell(grid[i + 6,j + 6], sudoku.Grid[i,j]);
                 }
                 else if (i > 5 && j > 5)
                 {
-                    grid[i][j] = mergeCell(grid[i + 6][j + 6], sudoku.Grid[i][j]);
+                    grid[i,j] = mergeCell(grid[i + 6,j + 6], sudoku.Grid[i,j]);
                 }
                 else
                 {
-                    grid[i + 6][j + 6] = sudoku.Grid[i][j];
+                    grid[i + 6,j + 6] = sudoku.Grid[i,j];
                 }
             }
         }
@@ -92,13 +90,13 @@ internal class SamuraiFactory : BaseSudokuFactory
         return mergeInto;
     }
 
-    private Cell[][] putSudokuOnGrid(Cell[][] grid, Sudoku sudoku, int xOffset, int yOffset)
+    private Cell[,] putSudokuOnGrid(Cell[,] grid, Sudoku sudoku, int xOffset, int yOffset)
     {
         for (var i = 0; i < 9; i++)
         {
             for (var j = 0; j < 9; j++)
             {
-                grid[i + xOffset][j + yOffset] = sudoku.Grid[i][j];
+                grid[i + xOffset,j + yOffset] = sudoku.Grid[i,j];
             }
         }
 

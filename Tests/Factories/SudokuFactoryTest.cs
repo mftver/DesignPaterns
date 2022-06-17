@@ -48,8 +48,8 @@ public class SudokuFactoryTest
         // Convert grid back to one dimensional list
         var grid = new List<int>();
         for (var i = 0; i < sudoku.Grid.GetLength(0); i++)
-        for (var j = 0; j < sudoku.Grid[i].GetLength(0); j++)
-            grid.Add(sudoku.Grid[i][j].Number);
+        for (var j = 0; j < sudoku.Grid.GetLength(1); j++)
+            grid.Add(sudoku.Grid[i, j].Number);
 
         // Convert file contents to list of integers
         var fileContentNumbers = new List<int>();

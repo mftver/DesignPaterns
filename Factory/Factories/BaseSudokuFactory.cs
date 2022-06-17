@@ -21,22 +21,22 @@ public abstract class BaseSudokuFactory : IFactory
         var subGroups = new List<SubGroup>();
 
         // Fill grid
-        var grid = new Cell[gridSize][];
-        for (var column = 0; column < gridSize; column++)
-        {
-            grid[column] = new Cell[gridSize];
-            var rowGroup = rowGroups[column];
+        var grid = new Cell[gridSize,gridSize];
 
-            for (var row = 0; row < gridSize; row++)
+
+        for (var x = 0; x < gridSize; x++)
+        {
+            for (var y = 0; y < gridSize; y++)
             {
-                var cellValue = characters[column * gridSize + row][0] - '0';
-                var subGroupIndex = tryGetSubGroupIndex(characters[column * gridSize + row]);
+                var cellValue = characters[x * gridSize + y][0] - '0';
+                var subGroupIndex = tryGetSubGroupIndex(characters[x * gridSize + y]);
                 if (subGroupIndex == -1)
                 {
-                    subGroupIndex = calculateSubGroupIndex(row, column, gridSize);
+                    subGroupIndex = calculateSubGroupIndex(x, y, gridSize);
                 }
                 
                 var subGroup = subGroups.ElementAtOrDefault(subGroupIndex);
+                
                 if (subGroup == null)
                 {
                     subGroup = new SubGroup(subGroupIndex);
@@ -45,14 +45,12 @@ public abstract class BaseSudokuFactory : IFactory
 
                 var groups = new List<Group>
                 {
-                    columnGroups[row],
-                    rowGroup,
+                    columnGroups[y],
+                    rowGroups[x],
                     subGroup
                 };
 
-                var isFixed = cellValue != 0;
-
-                grid[column][row] = new Cell(cellValue, isFixed, groups, subGroup, gridSize);
+                grid[x,y] = new Cell(cellValue, groups, subGroup, gridSize);
             }
         }
 
@@ -80,18 +78,6 @@ public abstract class BaseSudokuFactory : IFactory
         return subGroupIndex;
     }
     
-    private int calculateSubGroupIndex(int x, int y, int gridSize)
-    {
-        if (gridSize == 9)
-            return y / (gridSize / 3) * 3 + x / (gridSize / 3);
-        if (gridSize == 6)
-            return y / (gridSize / 3) * 2 + x / (gridSize / 2);
-        if (gridSize == 4)
-            return y / (gridSize / 2) * 2 + x / (gridSize / 2);
-
-        throw new ArgumentException("Invalid grid size");
-    }
-    
     private Group[] createGroupArray(int size)
     {
         var groupArray = new Group[size];
@@ -99,5 +85,17 @@ public abstract class BaseSudokuFactory : IFactory
             groupArray[i] = new Group();
 
         return groupArray;
+    }
+
+    private int calculateSubGroupIndex(int x, int y, int gridSize)
+    {
+        if (gridSize == 9)
+            return x / (gridSize / 3) * 3 + y / (gridSize / 3);
+        if (gridSize == 6)
+            return x / (gridSize / 3) * 2 + y / (gridSize / 2);
+        if (gridSize == 4)
+            return x / (gridSize / 2) * 2 + y / (gridSize / 2);
+
+        throw new ArgumentException("Invalid grid size");
     }
 }

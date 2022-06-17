@@ -2,18 +2,19 @@
 
 namespace Model;
 
-public class Sudoku : IValidatable
+public class Sudoku : IValidatable,IState
 {
-    public readonly Cell[][] Grid;
+    public readonly Cell?[,] Grid;
+    private List<IValidatable> Groups { get; }
+    
+    
 
-    public Sudoku(Cell[][] grid, List<IValidatable> groups)
+    public Sudoku(Cell[,] grid, List<IValidatable> groups)
     {
         Grid = grid;
         Groups = groups;
         CreateCellSubscriptions();
     }
-
-    private List<IValidatable> Groups { get; }
 
     public bool Validate()
     {
@@ -23,17 +24,13 @@ public class Sudoku : IValidatable
     private void CreateCellSubscriptions()
     {
         // Create subscriptions
-        foreach (var row in Grid)
-        foreach (var cell in row)
+        foreach (var cell in Grid)
         {
-            if (cell == null) continue;
-            cell.TriggerSubscription();
+            cell?.TriggerSubscription();
         }
 
-
         // Broadcast their initial values
-        foreach (var row in Grid)
-        foreach (var cell in row)
+        foreach (var cell in Grid)
         {
             if (cell == null) continue;
             var nextVal = new NumberSwitch(0, cell.Number);
@@ -43,16 +40,28 @@ public class Sudoku : IValidatable
 
     public bool TryEnter(Coordinate coordinate, int number)
     {
-        return FindCell(coordinate).TrySetNumber(number);
+        var cell = FindCell(coordinate);
+        if (cell == null) throw new Exception("Can't find cell");
+        
+        return cell.TrySetNumber(number);
     }
 
     public void Enter(Coordinate coordinate, int number)
     {
-        FindCell(coordinate).SetNumber(number);
+        var cell = FindCell(coordinate);
+        if (cell == null) throw new Exception("Can't find cell");
+        cell.SetNumber(number);
+    }
+    
+    public void EnterHelper(Coordinate coordinate, int number)
+    {
+        var cell = FindCell(coordinate);
+        if (cell == null) throw new Exception("Can't find cell");
+        cell.setHelperNumber(number);
     }
 
-    private Cell FindCell(Coordinate coordinate)
+    public Cell? FindCell(Coordinate coordinate)
     {
-        return Grid[coordinate.Y][coordinate.X];
+        return Grid[coordinate.X, coordinate.Y];
     }
 }
