@@ -2,7 +2,7 @@
 
 namespace Model;
 
-public class Sudoku
+public class Sudoku : IValidatable
 {
     public readonly Cell[][] Grid;
 
