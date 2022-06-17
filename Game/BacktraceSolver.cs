@@ -5,12 +5,9 @@ namespace Game;
 
 public class BacktraceSolver : ISolver
 {
-    private readonly int _gridSize;
     private readonly Sudoku _sudoku;
-    private bool _isSolved = false;
     public BacktraceSolver(Sudoku sudoku)
     {
-        _gridSize = sudoku.Grid.GetLength(0);
         _sudoku = sudoku;
     }
 
@@ -22,19 +19,21 @@ public class BacktraceSolver : ISolver
     private bool SolveCell()
     {
         var cell = NextCell();
-        if (cell == null) return true;
-        foreach (var cellPossibleNumber in cell.PossibleNumbers.Where(x => x != 0).ToList())
+        if (cell == null)
         {
-            if (!cell.TrySetNumber(cellPossibleNumber)) continue;
+            return true;
+        }
+
+        // var possibleNumbers = cell.PossibleNumbers.Where(val => val != 0).ToList();
+        // foreach (var possibleNumber in possibleNumbers)
+        for (int i = 0; i < cell.MaxValue; i++)
+        {
+            if (!cell.TrySetNumber(i)) continue;
             if (SolveCell()) return true;
+            cell.TrySetNumber(0);
         }
 
         return false;
-    }
-
-    private bool isLastCoordinate(Coordinate coordinate)
-    {
-        return coordinate.X == _gridSize - 1 && coordinate.Y == _gridSize - 1;
     }
 
     private Cell? NextCell()
