@@ -23,11 +23,9 @@ internal class SudokuFactory : IFactory
         for (var x = 0; x < gridSize; x++)
         {
             grid[x] = new Cell[gridSize];
-            var rowGroup = rowGroups[x];
-
             for (var y = 0; y < gridSize; y++)
             {
-                var cellValue = sudokuString[x + gridSize * y] - '0';
+                var cellValue = sudokuString[x * gridSize + y] - '0';
                 var subGroupIndex = calculateSubGroupIndex(x, y, gridSize);
 
                 var subGroup = subGroups.ElementAtOrDefault(subGroupIndex);
@@ -40,7 +38,7 @@ internal class SudokuFactory : IFactory
                 var groups = new List<Group>
                 {
                     columnGroups[y],
-                    rowGroup,
+                    rowGroups[x],
                     subGroup
                 };
 
