@@ -10,9 +10,7 @@ internal class SamuraiFactory : IFactory
     public Sudoku Create(File file)
     {
         //samurai is 21x21
-        var grid = new Cell[21][];
-
-        for (var i = 0; i < 21; i++) grid[i] = new Cell[21];
+        var grid = new Cell[21, 21];
 
         // read the file and get the 9x9 sudokus
         var rawSudokus = file.Contents();
@@ -47,7 +45,7 @@ internal class SamuraiFactory : IFactory
         return fileExtensions.Contains(file.Extension);
     }
 
-    private Group createSubSudoku(int sudokuNumber, string rawSudoku, Cell[][] grid, SubGroup[] subgroups)
+    private Group createSubSudoku(int sudokuNumber, string rawSudoku, Cell[,] grid, SubGroup[] subgroups)
     {
         var rowId = 0;
         var columnId = 0;
@@ -83,13 +81,13 @@ internal class SamuraiFactory : IFactory
             {
                 // check if the subgroup is overlapping
                 if (subgroupId == 9)
-                    cell = grid[rowId + 6][columnId + 6];
+                    cell = grid[rowId + 6,columnId + 6];
                 else if (subgroupId == 16)
-                    cell = grid[rowId + 6][columnId - 6];
+                    cell = grid[rowId + 6,columnId - 6];
                 else if (subgroupId == 30)
-                    cell = grid[rowId - 6][columnId + 6];
+                    cell = grid[rowId - 6,columnId + 6];
                 else if (subgroupId == 37)
-                    cell = grid[rowId - 6][columnId - 6];
+                    cell = grid[rowId - 6,columnId - 6];
                 else
                     cell = new Cell(cellNumber,new List<Group>
                     {
@@ -114,7 +112,7 @@ internal class SamuraiFactory : IFactory
             var x = CalculateXValue(sudokuNumber, columnId) - 1;
             var y = CalculateYValue(sudokuNumber, rowId) - 1;
             //add cell to 2d array
-            grid[y][x] = cell;
+            grid[y,x] = cell;
 
             // if subgroup isn't already in the 9x9 sudoku, add it
             if (!subSudoku.GetChildren().Contains(subgroups[subgroupId]))

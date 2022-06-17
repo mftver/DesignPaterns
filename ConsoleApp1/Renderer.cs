@@ -22,12 +22,11 @@ public class Renderer
         Console.Clear();
 
         var field = sudoku.Grid;
-        var y = 0;
-        foreach (var row in field)
+        for (var y = 0; y < field.GetLength(0); y++)
         {
-            var x = 0;
-            foreach (var cell in row)
+            for (var x = 0; x < field.GetLength(1); x++)
             {
+                var cell = field[y, x];
                 if (cell == null)
                 {
                     Console.BackgroundColor = ConsoleColor.Black;
@@ -40,24 +39,24 @@ public class Renderer
                 {
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
-                } else if (highlightInvalidCells && !cell.IsFixed && cell.Number != 0  && !cell.Validate())
+                }
+                else if (highlightInvalidCells && !cell.IsFixed && cell.Number != 0 && !cell.Validate())
                 {
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.ForegroundColor = ConsoleColor.Black;
-                }else {
+                }
+                else
+                {
                     Console.BackgroundColor = GetConsoleColor(cell.GetSubGroupId());
                     Console.ForegroundColor = GetConsoleColor(cell.GetSubGroupId() + 2);
                 }
 
                 Console.Write(cell.Number);
-                x++;
             }
-
             // Reset console colors
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
-            y++;
         }
     }
 

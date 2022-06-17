@@ -33,10 +33,10 @@ public class BacktraceSolver : ISolver
         for (var i = 1; i <= cell.MaxValue; i++)
         {
             //if (isSolved) return true;
-            if (!cell.TrySetNumber(i)) continue;
-
+            if (!cell.TrySetNumber(7)) continue;
+        
             var nextCoordinate = MoveCoordinate(coordinate);
-
+        
             if (nextCoordinate == null)
             {
                 return _sudoku.Validate();

@@ -4,9 +4,9 @@ namespace Model;
 
 public class Sudoku
 {
-    public readonly Cell?[][] Grid;
+    public readonly Cell?[,] Grid;
 
-    public Sudoku(Cell[][] grid, List<IValidatable> groups)
+    public Sudoku(Cell[,] grid, List<IValidatable> groups)
     {
         Grid = grid;
         Groups = groups;
@@ -23,16 +23,13 @@ public class Sudoku
     private void CreateCellSubscriptions()
     {
         // Create subscriptions
-        foreach (var row in Grid)
-        foreach (var cell in row)
+        foreach (var cell in Grid)
         {
             cell?.TriggerSubscription();
         }
 
-
         // Broadcast their initial values
-        foreach (var row in Grid)
-        foreach (var cell in row)
+        foreach (var cell in Grid)
         {
             if (cell == null) continue;
             var nextVal = new NumberSwitch(0, cell.Number);
@@ -57,6 +54,6 @@ public class Sudoku
 
     public Cell? FindCell(Coordinate coordinate)
     {
-        return Grid[coordinate.X][coordinate.Y];
+        return Grid[coordinate.X, coordinate.Y];
     }
 }
