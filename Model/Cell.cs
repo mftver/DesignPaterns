@@ -9,6 +9,11 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
     private readonly List<IDpObserver<NumberSwitch>> _observers = new();
     private readonly SubGroup _subGroup;
     private bool _isCurrentNumberValid = true;
+    public int Number { get; private set; }
+    public int HelperNumber { get; private set; }
+    public bool IsFixed { get; private set; }
+    public List<Group> Groups { get; }
+    public List<int> PossibleNumbers { get; }
 
     public Cell(int number, List<Group> groups, SubGroup subGroup, int maxValue)
     {
@@ -26,13 +31,9 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
         foreach (var group in groups) group.AddValidatable(this);
 
         if (!TrySetNumber(number)) throw new ArgumentException("Can't create new cell with number " + number);
+        HelperNumber = number;
         IsFixed = number != 0;
     }
-
-    public int Number { get; private set; }
-    public bool IsFixed { get; private set; }
-    public List<Group> Groups { get; }
-    public List<int> PossibleNumbers { get; }
 
     public void Subscribe(IDpObserver<NumberSwitch> observer)
     {
@@ -94,6 +95,13 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
         if (newNumber > MaxValue) return;
         UpdatePossibleNumbers(new NumberSwitch(Number, newNumber));
         Number = newNumber;
+    }
+    
+    public void setHelperNumber(int newNumber)
+    {
+        if (IsFixed) return;
+        if (newNumber > MaxValue) return;
+        HelperNumber = newNumber;
     }
 
     public int GetSubGroupId()

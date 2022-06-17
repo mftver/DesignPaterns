@@ -2,9 +2,12 @@
 
 namespace Model;
 
-public class Sudoku : IValidatable
+public class Sudoku : IValidatable,IState
 {
     public readonly Cell?[,] Grid;
+    private List<IValidatable> Groups { get; }
+    
+    
 
     public Sudoku(Cell[,] grid, List<IValidatable> groups)
     {
@@ -12,8 +15,6 @@ public class Sudoku : IValidatable
         Groups = groups;
         CreateCellSubscriptions();
     }
-
-    private List<IValidatable> Groups { get; }
 
     public bool Validate()
     {
@@ -50,6 +51,13 @@ public class Sudoku : IValidatable
         var cell = FindCell(coordinate);
         if (cell == null) throw new Exception("Can't find cell");
         cell.SetNumber(number);
+    }
+    
+    public void EnterHelper(Coordinate coordinate, int number)
+    {
+        var cell = FindCell(coordinate);
+        if (cell == null) throw new Exception("Can't find cell");
+        cell.setHelperNumber(number);
     }
 
     public Cell? FindCell(Coordinate coordinate)

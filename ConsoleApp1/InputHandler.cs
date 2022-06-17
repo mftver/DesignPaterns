@@ -1,5 +1,6 @@
 ﻿using Game;
 using Model;
+using Model.Interfaces;
 
 namespace Frontend;
 
@@ -11,6 +12,7 @@ public class InputHandler
     private readonly Sudoku _sudoku;
     private ConsoleKey _keyPressed;
     private bool _quit;
+    private IState _state;
 
     public InputHandler(Renderer renderer, Sudoku sudoku)
     {
@@ -18,6 +20,7 @@ public class InputHandler
         _sudoku = sudoku;
         _quit = false;
         _cursorPosition = new Coordinate(0, 0);
+        _state = new NormalState();
 
         _actionKeys = new Dictionary<ConsoleKey, Action>
         {
@@ -31,6 +34,7 @@ public class InputHandler
             { ConsoleKey.A, () => MoveCursor(Direction.Left) },
             { ConsoleKey.Enter, () => SolveWithBacktracking() },
             { ConsoleKey.C, () => ToggleValidationCheck() },
+            { ConsoleKey.H, () => ChangeHelperState() },
             
             // Number keys for filling in numbers
             { ConsoleKey.D1, () => FillInNumber(1) },
@@ -57,6 +61,18 @@ public class InputHandler
             { ConsoleKey.NumPad9, () => FillInNumber(9) }
         };
     }
+    
+    private void ChangeHelperState()
+    {
+        if (_state.GetType() == typeof(NormalState))
+        {
+            _state = new HelperState();
+        }
+        else
+        {
+            _state = new NormalState();
+        }
+    }
 
     private void ToggleValidationCheck()
     {
@@ -71,7 +87,7 @@ public class InputHandler
 
     public void Run()
     {
-        _renderer.Draw(_sudoku, _cursorPosition);
+        _renderer.Draw(_sudoku, _cursorPosition,_state);
 
         while (!_quit)
         {
@@ -83,7 +99,7 @@ public class InputHandler
             action.Invoke();
             _keyPressed = 0;
 
-            _renderer.Draw(_sudoku, _cursorPosition);
+            _renderer.Draw(_sudoku, _cursorPosition,_state);
         }
 
         Console.ReadLine();
@@ -91,7 +107,14 @@ public class InputHandler
 
     private void FillInNumber(int number)
     {
-        _sudoku.Enter(new Coordinate(_cursorPosition.Y,_cursorPosition.X), number);
+        if (_state.GetType() == typeof(NormalState))
+        {
+            _sudoku.Enter(new Coordinate(_cursorPosition.Y,_cursorPosition.X), number);
+        }
+        else
+        {
+            _sudoku.EnterHelper(new Coordinate(_cursorPosition.Y,_cursorPosition.X), number);
+        }
     }
 
     private void MoveCursor(Direction direction)
