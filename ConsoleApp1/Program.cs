@@ -16,7 +16,7 @@ internal class Program
 
         var factory = new OmniFactory();
 
-        var testFile = new File(@"../../../../Sudokus/puzzle.samurai");
+        var testFile = new File(@"../../../../Sudokus/puzzle.jigsaw");
 
         var sudoku = factory.Create(testFile);
 
