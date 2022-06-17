@@ -4,7 +4,7 @@ namespace Model;
 
 public class Sudoku
 {
-    public readonly Cell[][] Grid;
+    public readonly Cell?[][] Grid;
 
     public Sudoku(Cell[][] grid, List<IValidatable> groups)
     {
@@ -26,8 +26,7 @@ public class Sudoku
         foreach (var row in Grid)
         foreach (var cell in row)
         {
-            if (cell == null) continue;
-            cell.TriggerSubscription();
+            cell?.TriggerSubscription();
         }
 
 
@@ -43,16 +42,21 @@ public class Sudoku
 
     public bool TryEnter(Coordinate coordinate, int number)
     {
-        return FindCell(coordinate).TrySetNumber(number);
+        var cell = FindCell(coordinate);
+        if (cell == null) throw new Exception("Can't find cell");
+        
+        return cell.TrySetNumber(number);
     }
 
     public void Enter(Coordinate coordinate, int number)
     {
-        FindCell(coordinate).SetNumber(number);
+        var cell = FindCell(coordinate);
+        if (cell == null) throw new Exception("Can't find cell");
+        cell.SetNumber(number);
     }
 
-    public Cell FindCell(Coordinate coordinate)
+    public Cell? FindCell(Coordinate coordinate)
     {
-        return Grid[coordinate.Y][coordinate.X];
+        return Grid[coordinate.X][coordinate.Y];
     }
 }

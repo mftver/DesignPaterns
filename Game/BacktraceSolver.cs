@@ -5,67 +5,72 @@ namespace Game;
 
 public class BacktraceSolver : ISolver
 {
-    public void Solve(Sudoku sudoku)
+    private readonly int _gridSize;
+    private readonly Sudoku _sudoku;
+    private bool _isSolved = false;
+    public BacktraceSolver(Sudoku sudoku)
     {
-        var gridSize = sudoku.Grid.GetLength(0);
-        var currentCoordinate = new Coordinate(0, 0);
-        var lastTriedValue = 1;
-        
-        var solved = false;
-        while (!solved)
-        {
-            // Check if current coordinate is null or fixed
-            if (sudoku.FindCell(currentCoordinate) == null || sudoku.FindCell(currentCoordinate).IsFixed)
-            {
-                currentCoordinate = MoveCoordinate(true, currentCoordinate, gridSize);
-                continue;
-            }
-            
-            var moveForward = sudoku.TryEnter(currentCoordinate, lastTriedValue);
-            if (moveForward) { // Correct value was entered at current coordinate
-                currentCoordinate = MoveCoordinate(moveForward, currentCoordinate, gridSize);
-                lastTriedValue = 1;
-            } else if (lastTriedValue == gridSize) // we tried all values and failed, backtrace
-            {
-                sudoku.TryEnter(currentCoordinate, 0);
-                currentCoordinate = MoveCoordinate(false, currentCoordinate, gridSize);
-                lastTriedValue = 1;
-            } else { // Not correct value, try next value
-                lastTriedValue++;
-            }
-
-            solved = sudoku.Validate();
-        }
+        _gridSize = sudoku.Grid.GetLength(0);
+        _sudoku = sudoku;
     }
 
-    private Coordinate MoveCoordinate(bool forward, Coordinate currentCoordinate, int gridSize)
+    public void Solve()
+    {
+        var startCoordinate = new Coordinate(0, 0);
+
+        if (_sudoku.FindCell(startCoordinate)!.IsFixed)
+        {
+            startCoordinate = MoveCoordinate(startCoordinate);
+        }
+
+        SolveCell(startCoordinate);
+    }
+
+    private bool SolveCell(Coordinate coordinate)
+    {
+        var cell = _sudoku.FindCell(coordinate);
+
+        for (var i = 1; i <= cell.MaxValue; i++)
+        {
+            //if (isSolved) return true;
+            if (!cell.TrySetNumber(i)) continue;
+
+            var nextCoordinate = MoveCoordinate(coordinate);
+
+            if (nextCoordinate == null)
+            {
+                return _sudoku.Validate();
+            }
+            return SolveCell(nextCoordinate);
+        }
+
+        return false;
+    }
+
+    private bool isLastCoordinate(Coordinate coordinate)
+    {
+        return coordinate.X == _gridSize - 1 && coordinate.Y == _gridSize - 1;
+    }
+
+    private Coordinate? MoveCoordinate(Coordinate currentCoordinate)
     {
         var newCoordinate = new Coordinate(currentCoordinate.X, currentCoordinate.Y);
-        if (forward)
+
+        if (newCoordinate.X == _gridSize - 1)
         {
-            if (newCoordinate.X == gridSize - 1)
-            {
-                newCoordinate.X = 0;
-                newCoordinate.Y++;
-            }
-            else
-            {
-                newCoordinate.X++;
-            }
+            newCoordinate.X = 0;
+            newCoordinate.Y++;
         }
         else
         {
-            if (newCoordinate.X == 0)
-            {
-                newCoordinate.X = gridSize - 1;
-                newCoordinate.Y--;
-            }
-            else
-            {
-                newCoordinate.X--;
-            }
+            newCoordinate.X++;
         }
-        
+
+        if (isLastCoordinate(newCoordinate)) return null;
+        var cell = _sudoku.FindCell(newCoordinate);
+
+        if (cell == null || cell.IsFixed) return MoveCoordinate(newCoordinate);
+
         return newCoordinate;
     }
 }

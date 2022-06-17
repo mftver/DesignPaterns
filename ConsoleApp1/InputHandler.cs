@@ -57,7 +57,11 @@ public class InputHandler
         };
     }
 
-    private void SolveWithBacktracking() => new BacktraceSolver().Solve(_sudoku);
+    private void SolveWithBacktracking()
+    {
+        var backTracer = new BacktraceSolver(_sudoku);
+        backTracer.Solve();
+    } 
 
     public void Run()
     {

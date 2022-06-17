@@ -35,64 +35,6 @@ internal class SamuraiFactory : IFactory
         subsudokus[2] = createSubSudoku(2, rawSudokus[2], grid, subgroups);
 
         return new Sudoku(grid, new List<IValidatable>(subsudokus));
-
-
-        // for (var sudokuNumber = 0; sudokuNumber < rawSudokus.Length; sudokuNumber++)
-        // {
-        //     var sudokuString = rawSudokus[sudokuNumber];
-        //     var gridSize = Convert.ToInt32(Math.Sqrt(rawSudokus[0].Length));
-        //
-        //     if (sudokuNumber != 2)
-        //     {
-        //         // Create a group for each column
-        //         var columnGroups = createGroupArray(gridSize);
-        //         var rowGroups = createGroupArray(gridSize);
-        //         var subGroups = new List<SubGroup>();
-        //
-        //         // Fill grid
-        //         var grid = new Cell[gridSize][];
-        //         for (var row = 0; row < gridSize; row++)
-        //         {
-        //             grid[row] = new Cell[gridSize];
-        //             var rowGroup = rowGroups[row];
-        //
-        //             for (var column = 0; column < gridSize; column++)
-        //             {
-        //                 var cellValue = sudokuString[row * gridSize + column] - '0';
-        //                 var subGroupIndex = calculateSubGroupIndex(row, column, sudokuNumber);
-        //
-        //                 var subGroup = subGroups.ElementAtOrDefault(subGroupIndex);
-        //                 if (subGroup == null)
-        //                 {
-        //                     subGroup = new SubGroup(subGroupIndex);
-        //                     subGroups.Insert(subGroupIndex, subGroup);
-        //                 }
-        //
-        //                 var groups = new List<IValidatable>
-        //                 {
-        //                     columnGroups[column],
-        //                     rowGroup,
-        //                     subGroup
-        //                 };
-        //
-        //                 grid[column][row] = new Cell(cellValue, groups, subGroup);
-        //             }
-        //         }
-        //
-        //         var allGroups = new List<IValidatable>();
-        //         allGroups.AddRange(columnGroups);
-        //         allGroups.AddRange(rowGroups);
-        //         allGroups.AddRange(subGroups);
-        //
-        //         sudokus[sudokuNumber] = new Sudoku(grid, allGroups);
-        //     }
-        //     else
-        //     {
-        //         
-        //     }
-        // }
-
-        return null;
     }
 
     public bool Supports(File file)
@@ -149,7 +91,7 @@ internal class SamuraiFactory : IFactory
                 else if (subgroupId == 37)
                     cell = grid[rowId - 6][columnId - 6];
                 else
-                    cell = new Cell(cellNumber, cellNumber == 0, new List<Group>
+                    cell = new Cell(cellNumber,new List<Group>
                     {
                         rows[rowId],
                         columns[columnId]
@@ -157,7 +99,7 @@ internal class SamuraiFactory : IFactory
             }
             else
             {
-                cell = new Cell(cellNumber, cellNumber == 0, new List<Group>
+                cell = new Cell(cellNumber,new List<Group>
                 {
                     rows[rowId],
                     columns[columnId]

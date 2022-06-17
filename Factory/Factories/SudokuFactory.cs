@@ -20,14 +20,14 @@ internal class SudokuFactory : IFactory
 
         // Fill grid
         var grid = new Cell[gridSize][];
-        for (var column = 0; column < gridSize; column++)
+        for (var row = 0; row < gridSize; row++)
         {
-            grid[column] = new Cell[gridSize];
-            var rowGroup = rowGroups[column];
+            grid[row] = new Cell[gridSize];
+            var rowGroup = rowGroups[row];
 
-            for (var row = 0; row < gridSize; row++)
+            for (var column = 0; column < gridSize; column++)
             {
-                var cellValue = sudokuString[column * gridSize + row] - '0';
+                var cellValue = sudokuString[row * gridSize + column] - '0';
                 var subGroupIndex = calculateSubGroupIndex(row, column, gridSize);
 
                 var subGroup = subGroups.ElementAtOrDefault(subGroupIndex);
@@ -39,14 +39,12 @@ internal class SudokuFactory : IFactory
 
                 var groups = new List<Group>
                 {
-                    columnGroups[row],
+                    columnGroups[column],
                     rowGroup,
                     subGroup
                 };
 
-                var isFixed = cellValue != 0;
-
-                grid[column][row] = new Cell(cellValue, isFixed, groups, subGroup, gridSize);
+                grid[row][column] = new Cell(cellValue, groups, subGroup, gridSize);
             }
         }
 
@@ -83,11 +81,11 @@ internal class SudokuFactory : IFactory
     private int calculateSubGroupIndex(int x, int y, int gridSize)
     {
         if (gridSize == 9)
-            return y / (gridSize / 3) * 3 + x / (gridSize / 3);
+            return x / (gridSize / 3) * 3 + y / (gridSize / 3);
         if (gridSize == 6)
-            return y / (gridSize / 3) * 2 + x / (gridSize / 2);
+            return x / (gridSize / 3) * 2 + y / (gridSize / 2);
         if (gridSize == 4)
-            return y / (gridSize / 2) * 2 + x / (gridSize / 2);
+            return x / (gridSize / 2) * 2 + y / (gridSize / 2);
 
         throw new ArgumentException("Invalid grid size");
     }

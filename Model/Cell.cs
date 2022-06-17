@@ -5,18 +5,18 @@ namespace Model;
 
 public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<NumberSwitch>
 {
-    private readonly int _maxValue;
+    public readonly int MaxValue;
     private readonly List<IDpObserver<NumberSwitch>> _observers = new();
     private readonly SubGroup _subGroup;
     private bool _isCurrentNumberValid = true;
 
-    public Cell(int number, bool isFixed, List<Group> groups, SubGroup subGroup, int maxValue)
+    public Cell(int number, List<Group> groups, SubGroup subGroup, int maxValue)
     {
         if (number < 0 || number > maxValue) throw new ArgumentException("Number must be between 0 and " + maxValue);
 
         Groups = groups;
         _subGroup = subGroup;
-        _maxValue = maxValue;
+        MaxValue = maxValue;
 
         PossibleNumbers = new List<int>();
         for (var i = 0; i <= maxValue; i++)
@@ -26,7 +26,7 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
         foreach (var group in groups) group.AddValidatable(this);
 
         if (!TrySetNumber(number)) throw new ArgumentException("Can't create new cell with number " + number);
-        IsFixed = isFixed;
+        IsFixed = number != 0;
     }
 
     public int Number { get; private set; }
@@ -86,7 +86,7 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
     public void SetNumber(int newNumber)
     {
         if (IsFixed) return;
-        if (newNumber > _maxValue) return;
+        if (newNumber > MaxValue) return;
         UpdatePossibleNumbers(new NumberSwitch(Number, newNumber));
         Number = newNumber;
 
