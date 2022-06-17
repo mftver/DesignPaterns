@@ -7,7 +7,7 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
 {
     public readonly int MaxValue;
     private readonly List<IDpObserver<NumberSwitch>> _observers = new();
-    private readonly SubGroup _subGroup;
+    public SubGroup SubGroup { get; }
     private bool _isCurrentNumberValid = true;
 
     public Cell(int number, List<Group> groups, SubGroup subGroup, int maxValue)
@@ -15,7 +15,7 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
         if (number < 0 || number > maxValue) throw new ArgumentException("Number must be between 0 and " + maxValue);
 
         Groups = groups;
-        _subGroup = subGroup;
+        SubGroup = subGroup;
         MaxValue = maxValue;
 
         PossibleNumbers = new List<int>();
@@ -66,6 +66,7 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
 
     public bool Validate()
     {
+        //TODO; check cell value against other groups
         return PossibleNumbers.All(val => val == 0);
     }
 
@@ -98,7 +99,7 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
 
     public int GetSubGroupId()
     {
-        return _subGroup.Id;
+        return SubGroup.Id;
     }
 
     /***
