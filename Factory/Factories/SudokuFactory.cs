@@ -44,7 +44,7 @@ internal class SudokuFactory : IFactory
                     subGroup
                 };
 
-                grid[y][x] = new Cell(cellValue, groups, subGroup, gridSize);
+                grid[x][y] = new Cell(cellValue, groups, subGroup, gridSize);
             }
         }
 
