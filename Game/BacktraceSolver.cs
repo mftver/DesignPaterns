@@ -28,10 +28,15 @@ public class BacktraceSolver : ISolver
             return true;
 
         /* Check if column value  becomes 9, we move to next row and column start from 0 */
-        if (col == _n)
+        if (col >= _n)
         {
             row++;
             col = 0;
+        }
+        
+        if (grid[row, col] == null)
+        {
+            solveSudoku(grid,row,col+1);
         }
 
         /* Check if the current position of the grid already contains value >0, we iterate for next column */
