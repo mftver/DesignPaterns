@@ -66,8 +66,15 @@ public class Cell : IValidatable, IDpObservable<NumberSwitch>, IDpObserver<Numbe
 
     public bool Validate()
     {
-        //TODO; check cell value against other groups
-        return PossibleNumbers.All(val => val == 0);
+        var isValid = true;
+        
+        // check if the cells number is in any linked group
+        foreach (var group in Groups.Where(group => group.Cells().Where(cell => cell != this).Any(cell => cell.Number == Number)))
+        {
+            isValid = false;
+        }
+        
+        return isValid;
     }
 
     /**
