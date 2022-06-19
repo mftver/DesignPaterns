@@ -16,9 +16,9 @@ public class BacktraceSolver : ISolver
         _maxNumber = _sudoku.Grid[0,0].MaxValue;
     }
 
-    public void Solve()
+    public bool Solve()
     {
-        solveSudoku(_sudoku.Grid,0,0);
+        return solveSudoku(_sudoku.Grid,0,0);
     }
 
     private bool solveSudoku(Cell[,] grid, int row, int col)
