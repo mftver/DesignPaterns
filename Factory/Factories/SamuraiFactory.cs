@@ -20,12 +20,8 @@ internal class SamuraiFactory : BaseSudokuFactory
         }
 
         //convert IValidatableList to SudokuList
-        var sudokuList = new List<Sudoku>();
-        foreach (var subSudoku in subSudokus)
-        {
-            sudokuList.Add(subSudoku as Sudoku);
-        }
-        
+        var sudokuList = subSudokus.Select(subSudoku => subSudoku as Sudoku).ToList();
+
         var grid = mergeSudokus(sudokuList);
 
         return new Sudoku(grid, subSudokus);
